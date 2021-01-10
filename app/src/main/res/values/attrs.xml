@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="EditField">
+        <attr name="android:hint" />
+        <attr name="android:inputType" />
+        <attr name="android:maxLength" />
+        <attr name="android:lines" />
+        <attr name="android:enabled" />
+        <attr name="inputEnabled" format="boolean" />
+        <attr name="errorEnabled" format="boolean" />
+        <attr name="endIconMode" />
+        <attr name="endIconDrawable" />
+    </declare-styleable>
+
+</resources>

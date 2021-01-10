@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">Tomasulo Simulator</string>
+
+    <string name="label_instructions">Instructions</string>
+
+</resources>
