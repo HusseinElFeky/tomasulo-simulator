@@ -6,18 +6,17 @@ import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItem
 
 abstract class Instruction(
     open val number: Int,
-    open val operation: Operation,
-    open val rs: Int,
-    open val rt: Int
+    open val operation: Operation?,
+    open val rs: Int?,
+    open val rt: Int?
 ) : DifferentiableItem {
 
     val baseOperation: BaseOperation
-        get() = when (operation) {
-            Operation.ADD, Operation.SUB -> BaseOperation.A
-            Operation.MUL, Operation.DIV -> BaseOperation.M
-            Operation.LD -> BaseOperation.L
-            Operation.SD -> BaseOperation.S
-        }
+        get() = operation?.baseOperation ?: throw UninitializedPropertyAccessException(
+            "Instruction operation is not initialized yet."
+        )
+
+    abstract fun isValid(): Boolean
 
     override fun getUniqueIdentifier(): Any = number
 

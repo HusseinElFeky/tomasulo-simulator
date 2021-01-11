@@ -47,6 +47,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+    implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
 
     // Activity and Fragment
     implementation "androidx.activity:activity-ktx:${versions.activity}"

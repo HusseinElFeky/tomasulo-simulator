@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.TomasuloSimulator" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/green_800</item>
+        <item name="colorPrimaryVariant">@color/green_500</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/purple_500</item>
+        <item name="colorSecondaryVariant">@color/purple_700</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Others -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>

@@ -1,36 +1,37 @@
 ext {
     versions = [
             // App Version
-            versionCode      : 1,
-            versionName      : '1.0.0',
+            versionCode     : 1,
+            versionName     : '1.0.0',
 
             // Project Configuration
-            minSdk           : 21,
-            compileSdk       : 30,
-            targetSdk        : 30,
-            buildTools       : '30.0.2',
+            minSdk          : 21,
+            compileSdk      : 30,
+            targetSdk       : 30,
+            buildTools      : '30.0.2',
 
-            gradle           : '4.1.1',
-            kotlin           : '1.4.21',
+            gradle          : '4.1.1',
+            kotlin          : '1.4.21',
 
             // App Dependencies
-            kotlinExtensions : '1.3.2',
+            kotlinExtensions: '1.3.2',
 
-            appcompat        : '1.2.0',
-            material         : '1.3.0-beta01',
-            constraintLayout : '2.0.4',
+            appcompat       : '1.2.0',
+            material        : '1.3.0-beta01',
+            constraintLayout: '2.0.4',
+            recyclerView    : '1.1.0',
 
-            activity         : '1.2.0-rc01',
-            fragment         : '1.3.0-rc01',
+            activity        : '1.2.0-rc01',
+            fragment        : '1.3.0-rc01',
 
-            archLifecycle    : '2.3.0-rc01',
-            navComponent     : '2.3.2',
+            archLifecycle   : '2.3.0-rc01',
+            navComponent    : '2.3.2',
 
-            timber           : '4.7.1',
+            timber          : '4.7.1',
 
             // Test Dependencies
-            junit            : '4.13.1',
-            junitAndroid     : '1.1.2',
-            espresso         : '3.3.0'
+            junit           : '4.13.1',
+            junitAndroid    : '1.1.2',
+            espresso        : '3.3.0'
     ]
 }

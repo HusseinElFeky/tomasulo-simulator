@@ -4,8 +4,17 @@ import com.husseinelfeky.tomasulosimulator.model.operation.Operation
 
 data class ITypeInstruction(
     override val number: Int,
-    override val operation: Operation,
-    override val rs: Int,
-    override val rt: Int,
-    val offset: Int
-) : Instruction(number, operation, rs, rt)
+    override var operation: Operation? = null,
+    override var rs: Int? = null,
+    override var rt: Int? = null,
+    var offset: Int? = null
+) : Instruction(number, operation, rs, rt) {
+
+    override fun isValid(): Boolean {
+        return operation != null && rs != null && rt != null && offset != null
+    }
+
+    fun toRTypeInstruction(operation: Operation): RTypeInstruction {
+        return RTypeInstruction(number, operation)
+    }
+}
