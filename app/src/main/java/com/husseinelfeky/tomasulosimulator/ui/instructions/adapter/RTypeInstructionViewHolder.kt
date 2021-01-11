@@ -1,6 +1,5 @@
 package com.husseinelfeky.tomasulosimulator.ui.instructions.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,11 @@ import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.InstructionType
 import com.husseinelfeky.tomasulosimulator.model.instruction.RTypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
+import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import kotlinx.android.synthetic.main.item_instruction_type_r.view.*
 
 class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    @SuppressLint("SetTextI18n")
     fun bind(instruction: RTypeInstruction, onInstructionUpdate: (Instruction) -> Unit) {
         with(itemView) {
             til_operation.hint = "op ${instruction.number}"
@@ -26,15 +25,15 @@ class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rd?.let {
-                tv_rd.setText("R$it")
+                tv_rd.setText(Register.getName(it))
             }
 
             instruction.rs?.let {
-                tv_rs.setText("R$it")
+                tv_rs.setText(Register.getName(it))
             }
 
             instruction.rt?.let {
-                tv_rt.setText("R$it")
+                tv_rt.setText(Register.getName(it))
             }
 
             val operations = Operation.values()
@@ -56,7 +55,7 @@ class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 }
             }
 
-            val registers = (0..15).toList().map { "R$it" }
+            val registers = Register.getAllNames()
             tv_rd.setAdapter(
                 ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, registers)
             )
