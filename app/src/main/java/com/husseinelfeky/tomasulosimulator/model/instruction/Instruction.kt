@@ -18,6 +18,11 @@ abstract class Instruction(
             "Instruction operation is not initialized yet."
         )
 
+    val cyclesNeeded: Int
+        get() = operation?.cycles ?: throw UninitializedPropertyAccessException(
+            "Instruction operation is not initialized yet."
+        )
+
     abstract fun isValid(): Boolean
 
     override fun getUniqueIdentifier(): Any = number
