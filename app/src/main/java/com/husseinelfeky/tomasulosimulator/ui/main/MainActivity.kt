@@ -28,6 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)
-        NavigationUI.setupWithNavController(toolbar, navController)
+        NavigationUI.setupActionBarWithNavController(this, navController)
     }
 }

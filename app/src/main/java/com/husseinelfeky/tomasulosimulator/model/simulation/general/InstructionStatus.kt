@@ -2,10 +2,10 @@ package com.husseinelfeky.tomasulosimulator.model.simulation.general
 
 import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 
-data class InstructionItem(
+data class InstructionStatus(
     val instruction: Instruction,
-    val issued: Int,
-    val executed: Int,
-    val computed: Int,
-    val written: Int
+    val issued: Int? = null,
+    val executed: Int? = null,
+    val computed: Int? = null,
+    val written: Int? = null
 )

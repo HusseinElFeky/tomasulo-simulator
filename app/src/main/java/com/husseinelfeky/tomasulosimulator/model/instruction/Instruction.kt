@@ -1,7 +1,9 @@
 package com.husseinelfeky.tomasulosimulator.model.instruction
 
+import android.os.Parcelable
 import com.husseinelfeky.tomasulosimulator.model.operation.BaseOperation
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus
 import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItem
 
 abstract class Instruction(
@@ -9,7 +11,7 @@ abstract class Instruction(
     open val operation: Operation?,
     open val rs: Int?,
     open val rt: Int?
-) : DifferentiableItem {
+) : Parcelable, DifferentiableItem {
 
     val baseOperation: BaseOperation
         get() = operation?.baseOperation ?: throw UninitializedPropertyAccessException(
@@ -21,4 +23,8 @@ abstract class Instruction(
     override fun getUniqueIdentifier(): Any = number
 
     override fun getContent(): String = toString()
+
+    fun toInstructionStatus(): InstructionStatus {
+        return InstructionStatus(this)
+    }
 }

@@ -5,8 +5,10 @@
     <string name="error_instructions_missing">Instructions are missing.</string>
 
     <string name="label_instructions">Instructions</string>
+    <string name="label_simulation">Simulation</string>
 
     <string name="proceed">Proceed</string>
     <string name="clear">Clear</string>
+    <string name="exit">Exit</string>
 
 </resources>

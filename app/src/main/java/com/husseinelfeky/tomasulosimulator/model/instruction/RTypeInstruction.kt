@@ -1,7 +1,9 @@
 package com.husseinelfeky.tomasulosimulator.model.instruction
 
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class RTypeInstruction(
     override val number: Int,
     override var operation: Operation? = null,

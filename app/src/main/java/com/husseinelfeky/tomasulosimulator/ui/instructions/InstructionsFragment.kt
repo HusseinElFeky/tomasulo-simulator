@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.husseinelfeky.tomasulosimulator.R
 import com.husseinelfeky.tomasulosimulator.ui.instructions.adapter.InstructionsAdapter
 import com.husseinelfeky.tomasulosimulator.ui.main.MainActivity
@@ -29,6 +30,8 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
 
     private fun initView() {
         (requireActivity() as MainActivity).apply {
+            btn_action_secondary.visibility = View.VISIBLE
+
             fab_action.setImageResource(R.drawable.ic_add)
             btn_action_primary.text = getString(R.string.proceed)
             btn_action_secondary.text = getString(R.string.clear)
@@ -45,7 +48,11 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
 
             btn_action_primary.setOnClickListener {
                 if (viewModel.areInstructionsValid()) {
-                    // TODO: Navigate.
+                    findNavController().navigate(
+                        InstructionsFragmentDirections.actionInstructionsFragmentToSimulationFragment(
+                            viewModel.instructions.value!!.toTypedArray()
+                        )
+                    )
                 } else {
                     showSnackbar(R.string.error_instructions_missing)
                 }
