@@ -16,6 +16,10 @@ data class ITypeInstruction(
         return operation != null && rs != null && rt != null && offset != null
     }
 
+    override fun toFormattedString(): String {
+        return "${operation?.exactName} R$rt, $offset(R$rs)"
+    }
+
     fun toRTypeInstruction(operation: Operation): RTypeInstruction {
         return RTypeInstruction(number, operation)
     }

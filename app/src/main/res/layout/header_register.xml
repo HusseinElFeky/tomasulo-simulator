@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50sp">
+
+    <TextView
+        style="@style/RowField.Label.Header"
+        android:text="Register" />
+
+    <TextView
+        style="@style/RowField.Label.Header"
+        android:text="Qi" />
+
+</LinearLayout>

@@ -14,4 +14,30 @@
         <item name="colorOnSecondary">@color/white</item>
     </style>
 
+    <style name="RowField">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="RowField.Label" parent="RowField">
+        <item name="android:background">@color/gray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RowField.Label.Header" parent="RowField.Label">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/green_500</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RowField.Value" parent="RowField" />
+
+    <style name="RowField.Value.RemainingCycles" parent="RowField.Value">
+        <item name="android:textColor">@color/green_800</item>
+    </style>
+
 </resources>

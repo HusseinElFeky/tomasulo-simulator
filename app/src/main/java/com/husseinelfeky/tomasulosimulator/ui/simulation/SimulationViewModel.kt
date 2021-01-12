@@ -47,6 +47,8 @@ class SimulationViewModel : ViewModel() {
     }
 
     fun goToNextCycle() {
+        _cycle.value = _cycle.value!! + 1
+
         // TODO
     }
 }

@@ -16,6 +16,10 @@ data class RTypeInstruction(
         return operation != null && rs != null && rt != null && rd != null
     }
 
+    override fun toFormattedString(): String {
+        return "${operation?.exactName} R$rd, R$rs, R$rt"
+    }
+
     fun toITypeInstruction(operation: Operation): ITypeInstruction {
         return ITypeInstruction(number, operation)
     }

@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="30sp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_number"
+        style="@style/RowField.Value"
+        android:layout_weight="0.5"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/tv_instruction"
+        style="@style/RowField.Label"
+        android:layout_weight="2.5"
+        tools:text="ADD R1, R2, R3" />
+
+    <TextView
+        android:id="@+id/tv_issued"
+        style="@style/RowField.Value"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/tv_executed"
+        style="@style/RowField.Value"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tv_computed"
+        style="@style/RowField.Value"
+        tools:text="4" />
+
+    <TextView
+        android:id="@+id/tv_written"
+        style="@style/RowField.Value"
+        tools:text="5" />
+
+</LinearLayout>

@@ -25,6 +25,8 @@ abstract class Instruction(
 
     abstract fun isValid(): Boolean
 
+    abstract fun toFormattedString(): String
+
     override fun getUniqueIdentifier(): Any = number
 
     override fun getContent(): String = toString()

@@ -6,11 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
 import com.husseinelfeky.tomasulosimulator.model.simulation.StoreBuffer
+import kotlinx.android.synthetic.main.item_buffer_store.view.*
 
 class StoreBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(storeBuffer: StoreBuffer) {
-        // TODO
+        with(itemView) {
+            tv_remaining_cycles.text = storeBuffer.remainingCycles?.toString() ?: "-"
+            tv_tag.text = storeBuffer.tag.name
+            tv_address.text = storeBuffer.address?.toString() ?: "-"
+            tv_v.text = storeBuffer.v?.toString() ?: "-"
+            tv_q.text = storeBuffer.q?.name ?: "-"
+            tv_busy.text = if (storeBuffer.isBusy) "Y" else "N"
+        }
     }
 
     companion object {

@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="30sp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_remaining_cycles"
+        style="@style/RowField.Value.RemainingCycles"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tv_tag"
+        style="@style/RowField.Label"
+        tools:text="S1" />
+
+    <TextView
+        android:id="@+id/tv_address"
+        style="@style/RowField.Value"
+        tools:text="12" />
+
+    <TextView
+        android:id="@+id/tv_v"
+        style="@style/RowField.Value"
+        tools:text="-" />
+
+    <TextView
+        android:id="@+id/tv_q"
+        style="@style/RowField.Value"
+        tools:text="A3" />
+
+    <TextView
+        android:id="@+id/tv_busy"
+        style="@style/RowField.Value"
+        tools:text="Y" />
+
+</LinearLayout>

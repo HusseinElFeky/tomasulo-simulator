@@ -6,11 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
 import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
+import kotlinx.android.synthetic.main.item_reservation_station.view.*
 
 class ReservationStationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(reservationStation: ReservationStation) {
-        // TODO
+        with(itemView) {
+            tv_remaining_cycles.text = reservationStation.remainingCycles?.toString() ?: "-"
+            tv_tag.text = reservationStation.tag.name
+            tv_operation.text = reservationStation.operation?.toString() ?: "-"
+            tv_vj.text = reservationStation.vj?.toString() ?: "-"
+            tv_vk.text = reservationStation.vk?.toString() ?: "-"
+            tv_qj.text = reservationStation.qj?.name ?: "-"
+            tv_qk.text = reservationStation.qk?.name ?: "-"
+            tv_busy.text = if (reservationStation.isBusy) "Y" else "N"
+        }
     }
 
     companion object {
