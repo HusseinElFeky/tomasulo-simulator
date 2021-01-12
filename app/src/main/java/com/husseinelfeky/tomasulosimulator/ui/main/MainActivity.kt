@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.husseinelfeky.tomasulosimulator.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)
-        NavigationUI.setupActionBarWithNavController(this, navController)
+        NavigationUI.setupActionBarWithNavController(
+            this,
+            navController,
+            AppBarConfiguration(setOf(R.id.instructionsFragment, R.id.simulationFragment))
+        )
     }
 }
