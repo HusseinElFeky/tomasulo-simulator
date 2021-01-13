@@ -13,7 +13,7 @@ data class LoadBuffer(
 ) : Buffer(tag, address, isBusy, instructionNumber, remainingCycles) {
 
     override fun canExecute(): Boolean {
-        return isBusy
+        return isBusy && remainingCycles != 0
     }
 
     override fun clear() {

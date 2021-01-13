@@ -63,82 +63,76 @@ class SimulationViewModel : ViewModel() {
         // Increment cycle by one.
         _cycle.value = _cycle.value!! + 1
 
-        // Write computed instructions.
-        _addStations.value = _addStations.value!!.onEach {
-            if (it.remainingCycles == 0) {
-                _registers.value = _registers.value!!.apply {
-                    this[it.assignedRegister!!].tag = null
+        // Write a computed instruction if there is any.
+        var hasWritten = false
+
+        _addStations.value = _addStations.value!!.apply {
+            for (item in this) {
+                if (item.remainingCycles == 0) {
+                    _registers.value = _registers.value!!.apply {
+                        this[item.assignedRegister!!].tag = null
+                    }
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[item.instructionNumber!! - 1].written = _cycle.value
+                    }
+                    item.clear()
+                    hasWritten = true
+                    break
                 }
-                _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                    this[it.instructionNumber!! - 1].written = _cycle.value
-                }
-                it.clear()
             }
         }
 
-        _mulStations.value = _mulStations.value!!.onEach {
-            if (it.remainingCycles == 0) {
-                _registers.value = _registers.value!!.apply {
-                    this[it.assignedRegister!!].tag = null
+        if (!hasWritten) {
+            _mulStations.value = _mulStations.value!!.apply {
+                for (item in this) {
+                    if (item.remainingCycles == 0) {
+                        _registers.value = _registers.value!!.apply {
+                            this[item.assignedRegister!!].tag = null
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[item.instructionNumber!! - 1].written = _cycle.value
+                        }
+                        item.clear()
+                        hasWritten = true
+                        break
+                    }
                 }
-                _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                    this[it.instructionNumber!! - 1].written = _cycle.value
-                }
-                it.clear()
             }
         }
 
-        _loadBuffers.value = _loadBuffers.value!!.onEach {
-            if (it.remainingCycles == 0) {
-                _registers.value = _registers.value!!.apply {
-                    this[it.assignedRegister!!].tag = null
+        if (!hasWritten) {
+            _loadBuffers.value = _loadBuffers.value!!.apply {
+                for (item in this) {
+                    if (item.remainingCycles == 0) {
+                        _registers.value = _registers.value!!.apply {
+                            this[item.assignedRegister!!].tag = null
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[item.instructionNumber!! - 1].written = _cycle.value
+                        }
+                        item.clear()
+                        hasWritten = true
+                        break
+                    }
                 }
-                _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                    this[it.instructionNumber!! - 1].written = _cycle.value
-                }
-                it.clear()
             }
         }
 
-        _storeBuffers.value = _storeBuffers.value!!.onEach {
-            if (it.remainingCycles == 0) {
-                _registers.value = _registers.value!!.apply {
-                    this[it.assignedRegister!!].tag = null
+        if (!hasWritten) {
+            _storeBuffers.value = _storeBuffers.value!!.apply {
+                for (item in this) {
+                    if (item.remainingCycles == 0) {
+                        _registers.value = _registers.value!!.apply {
+                            this[item.assignedRegister!!].tag = null
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[item.instructionNumber!! - 1].written = _cycle.value
+                        }
+                        item.clear()
+                        hasWritten = true
+                        break
+                    }
                 }
-                _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                    this[it.instructionNumber!! - 1].written = _cycle.value
-                }
-                it.clear()
-            }
-        }
-
-        // Publish written results to all reservation stations and store buffers.
-        _addStations.value = _addStations.value!!.onEach {
-            if (it.qj != null && _registers.value!![it.qj!!.assignedRegister!!].tag == null) {
-                it.vj = it.qj!!.assignedRegister
-                it.qj = null
-            }
-            if (it.qk != null && _registers.value!![it.qk!!.assignedRegister!!].tag == null) {
-                it.vk = it.qk!!.assignedRegister
-                it.qk = null
-            }
-        }
-
-        _mulStations.value = _mulStations.value!!.onEach {
-            if (it.qj != null && _registers.value!![it.qj!!.assignedRegister!!].tag == null) {
-                it.vj = it.qj!!.assignedRegister
-                it.qj = null
-            }
-            if (it.qk != null && _registers.value!![it.qk!!.assignedRegister!!].tag == null) {
-                it.vk = it.qk!!.assignedRegister
-                it.qk = null
-            }
-        }
-
-        _storeBuffers.value = _storeBuffers.value!!.onEach {
-            if (it.q != null && _registers.value!![it.q!!.assignedRegister!!].tag == null) {
-                it.v = it.q!!.assignedRegister
-                it.q = null
             }
         }
 
@@ -356,6 +350,36 @@ class SimulationViewModel : ViewModel() {
                         this[it.instructionNumber!! - 1].computed = _cycle.value
                     }
                 }
+            }
+        }
+
+        // Publish written results to all reservation stations and store buffers.
+        _addStations.value = _addStations.value!!.onEach {
+            if (it.qj != null && _registers.value!![it.qj!!.assignedRegister!!].tag == null) {
+                it.vj = it.qj!!.assignedRegister
+                it.qj = null
+            }
+            if (it.qk != null && _registers.value!![it.qk!!.assignedRegister!!].tag == null) {
+                it.vk = it.qk!!.assignedRegister
+                it.qk = null
+            }
+        }
+
+        _mulStations.value = _mulStations.value!!.onEach {
+            if (it.qj != null && _registers.value!![it.qj!!.assignedRegister!!].tag == null) {
+                it.vj = it.qj!!.assignedRegister
+                it.qj = null
+            }
+            if (it.qk != null && _registers.value!![it.qk!!.assignedRegister!!].tag == null) {
+                it.vk = it.qk!!.assignedRegister
+                it.qk = null
+            }
+        }
+
+        _storeBuffers.value = _storeBuffers.value!!.onEach {
+            if (it.q != null && _registers.value!![it.q!!.assignedRegister!!].tag == null) {
+                it.v = it.q!!.assignedRegister
+                it.q = null
             }
         }
 

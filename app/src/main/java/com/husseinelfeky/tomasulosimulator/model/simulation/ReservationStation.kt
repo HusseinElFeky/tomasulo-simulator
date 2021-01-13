@@ -18,7 +18,7 @@ data class ReservationStation(
 ) : RowItem(tag, isBusy, instructionNumber, remainingCycles) {
 
     override fun canExecute(): Boolean {
-        return isBusy && vj != null && vk != null
+        return isBusy && remainingCycles != 0 && vj != null && vk != null
     }
 
     override fun clear() {

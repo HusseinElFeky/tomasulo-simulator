@@ -15,7 +15,7 @@ data class StoreBuffer(
 ) : Buffer(tag, address, isBusy, instructionNumber, remainingCycles) {
 
     override fun canExecute(): Boolean {
-        return isBusy && v != null
+        return isBusy && remainingCycles != 0 && v != null
     }
 
     override fun clear() {
