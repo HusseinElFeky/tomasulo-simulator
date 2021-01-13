@@ -15,7 +15,11 @@ class StoreBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tv_remaining_cycles.text = storeBuffer.remainingCycles?.toString() ?: "-"
             tv_tag.text = storeBuffer.tag.name
             tv_address.text = storeBuffer.address?.toString() ?: "-"
-            tv_v.text = storeBuffer.v?.toString() ?: "-"
+            tv_v.text = if (storeBuffer.v != null) {
+                "R[R${storeBuffer.v}]"
+            } else {
+                "-"
+            }
             tv_q.text = storeBuffer.q?.name ?: "-"
             tv_busy.text = if (storeBuffer.isBusy) "Y" else "N"
         }

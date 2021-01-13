@@ -15,8 +15,16 @@ class ReservationStationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tv_remaining_cycles.text = reservationStation.remainingCycles?.toString() ?: "-"
             tv_tag.text = reservationStation.tag.name
             tv_operation.text = reservationStation.operation?.toString() ?: "-"
-            tv_vj.text = reservationStation.vj?.toString() ?: "-"
-            tv_vk.text = reservationStation.vk?.toString() ?: "-"
+            tv_vj.text = if (reservationStation.vj != null) {
+                "R[R${reservationStation.vj}]"
+            } else {
+                "-"
+            }
+            tv_vk.text = if (reservationStation.vk != null) {
+                "R[R${reservationStation.vk}]"
+            } else {
+                "-"
+            }
             tv_qj.text = reservationStation.qj?.name ?: "-"
             tv_qk.text = reservationStation.qk?.name ?: "-"
             tv_busy.text = if (reservationStation.isBusy) "Y" else "N"
