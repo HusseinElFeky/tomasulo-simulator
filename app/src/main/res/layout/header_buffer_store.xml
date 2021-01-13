@@ -4,27 +4,29 @@
     android:layout_height="50sp">
 
     <TextView
-        style="@style/RowField.Label.Header"
+        style="@style/SimulationField.Label.Header"
+        android:maxLines="2"
         android:text="Rem. Cycles" />
 
     <TextView
-        style="@style/RowField.Label.Header"
+        style="@style/SimulationField.Label.Header"
         android:text="Tag" />
 
     <TextView
-        style="@style/RowField.Label.Header"
+        style="@style/SimulationField.Label.Header"
+        android:layout_weight="3"
         android:text="Address" />
 
     <TextView
-        style="@style/RowField.Label.Header"
+        style="@style/SimulationField.Label.Header"
         android:text="V" />
 
     <TextView
-        style="@style/RowField.Label.Header"
+        style="@style/SimulationField.Label.Header"
         android:text="Q" />
 
     <TextView
-        style="@style/RowField.Label.Header"
+        style="@style/SimulationField.Label.Header"
         android:text="Busy" />
 
 </LinearLayout>

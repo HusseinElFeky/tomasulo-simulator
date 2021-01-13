@@ -6,12 +6,12 @@
 
     <TextView
         android:id="@+id/tv_name"
-        style="@style/RowField.Label"
+        style="@style/SimulationField.Label"
         tools:text="R7" />
 
     <TextView
         android:id="@+id/tv_tag"
-        style="@style/RowField.Value"
+        style="@style/SimulationField.Value"
         tools:text="A1" />
 
 </LinearLayout>

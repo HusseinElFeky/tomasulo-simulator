@@ -6,32 +6,33 @@
 
     <TextView
         android:id="@+id/tv_remaining_cycles"
-        style="@style/RowField.Value.RemainingCycles"
+        style="@style/SimulationField.Value.RemainingCycles"
         tools:text="2" />
 
     <TextView
         android:id="@+id/tv_tag"
-        style="@style/RowField.Label"
+        style="@style/SimulationField.Label"
         tools:text="S1" />
 
     <TextView
         android:id="@+id/tv_address"
-        style="@style/RowField.Value"
+        style="@style/SimulationField.Value"
+        android:layout_weight="3"
         tools:text="12" />
 
     <TextView
         android:id="@+id/tv_v"
-        style="@style/RowField.Value"
+        style="@style/SimulationField.Value"
         tools:text="-" />
 
     <TextView
         android:id="@+id/tv_q"
-        style="@style/RowField.Value"
+        style="@style/SimulationField.Value"
         tools:text="A3" />
 
     <TextView
         android:id="@+id/tv_busy"
-        style="@style/RowField.Value"
+        style="@style/SimulationField.Value"
         tools:text="Y" />
 
 </LinearLayout>
