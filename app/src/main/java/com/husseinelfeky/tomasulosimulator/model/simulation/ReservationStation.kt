@@ -13,8 +13,24 @@ data class ReservationStation(
     var qj: Tag? = null,
     var qk: Tag? = null,
     override var isBusy: Boolean = false,
+    override var instructionNumber: Int? = null,
     override var remainingCycles: Int? = null
-) : RowItem(tag, isBusy, remainingCycles) {
+) : RowItem(tag, isBusy, instructionNumber, remainingCycles) {
+
+    override fun canExecute(): Boolean {
+        return isBusy && vj != null && vk != null
+    }
+
+    override fun clear() {
+        operation = null
+        vj = null
+        vk = null
+        qj = null
+        qk = null
+        isBusy = false
+        instructionNumber = null
+        remainingCycles = null
+    }
 
     companion object {
         private const val STATIONS_ADD = 3

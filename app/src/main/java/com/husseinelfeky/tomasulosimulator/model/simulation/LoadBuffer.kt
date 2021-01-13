@@ -8,8 +8,20 @@ data class LoadBuffer(
     override val tag: Tag,
     override var address: Int? = null,
     override var isBusy: Boolean = false,
+    override var instructionNumber: Int? = null,
     override var remainingCycles: Int? = null
-) : Buffer(tag, address, isBusy, remainingCycles) {
+) : Buffer(tag, address, isBusy, instructionNumber, remainingCycles) {
+
+    override fun canExecute(): Boolean {
+        return isBusy
+    }
+
+    override fun clear() {
+        address = null
+        isBusy = false
+        instructionNumber = null
+        remainingCycles = null
+    }
 
     companion object {
         private const val BUFFERS_LOAD = 3

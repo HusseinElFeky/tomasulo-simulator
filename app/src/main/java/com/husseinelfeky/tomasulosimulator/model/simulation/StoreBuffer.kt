@@ -10,8 +10,22 @@ data class StoreBuffer(
     var v: Int? = null,
     var q: Tag? = null,
     override var isBusy: Boolean = false,
+    override var instructionNumber: Int? = null,
     override var remainingCycles: Int? = null
-) : Buffer(tag, address, isBusy, remainingCycles) {
+) : Buffer(tag, address, isBusy, instructionNumber, remainingCycles) {
+
+    override fun canExecute(): Boolean {
+        return isBusy && v != null
+    }
+
+    override fun clear() {
+        address = null
+        v = null
+        q = null
+        isBusy = false
+        instructionNumber = null
+        remainingCycles = null
+    }
 
     companion object {
         private const val BUFFERS_STORE = 3

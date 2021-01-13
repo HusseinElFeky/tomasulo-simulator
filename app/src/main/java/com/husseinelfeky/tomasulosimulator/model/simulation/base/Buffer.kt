@@ -6,5 +6,6 @@ abstract class Buffer(
     override val tag: Tag,
     open val address: Int?,
     override val isBusy: Boolean,
+    override val instructionNumber: Int?,
     override val remainingCycles: Int?
-) : RowItem(tag, isBusy, remainingCycles)
+) : RowItem(tag, isBusy, instructionNumber, remainingCycles)

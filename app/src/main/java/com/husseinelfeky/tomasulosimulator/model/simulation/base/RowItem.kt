@@ -6,8 +6,13 @@ import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItem
 abstract class RowItem(
     open val tag: Tag,
     open val isBusy: Boolean,
+    open val instructionNumber: Int?,
     open val remainingCycles: Int?
 ) : DifferentiableItem {
+
+    abstract fun canExecute(): Boolean
+
+    abstract fun clear()
 
     override fun getUniqueIdentifier(): Any = tag.id
 

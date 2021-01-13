@@ -62,6 +62,7 @@ class SimulationViewModel : ViewModel() {
         } else {
             null
         }
+
         if (nextInstS != null) {
             val nextInst = nextInstS.instruction
             when (nextInst.operation!!.baseOperation) {
@@ -85,6 +86,7 @@ class SimulationViewModel : ViewModel() {
                                     qk = rtTag
                                 }
                                 isBusy = true
+                                instructionNumber = nextInst.number
                                 remainingCycles = nextInst.operation!!.cycles
                             }
                         }
@@ -116,6 +118,7 @@ class SimulationViewModel : ViewModel() {
                                     qk = rtTag
                                 }
                                 isBusy = true
+                                instructionNumber = nextInst.number
                                 remainingCycles = nextInst.operation!!.cycles
                             }
                         }
@@ -135,6 +138,7 @@ class SimulationViewModel : ViewModel() {
                             this[nextEmptyIndex].apply {
                                 address = nextInst.address
                                 isBusy = true
+                                instructionNumber = nextInst.number
                                 remainingCycles = nextInst.operation!!.cycles
                             }
                         }
@@ -160,6 +164,7 @@ class SimulationViewModel : ViewModel() {
                                     q = qTag
                                 }
                                 isBusy = true
+                                instructionNumber = nextInst.number
                                 remainingCycles = nextInst.operation!!.cycles
                             }
                         }
@@ -171,6 +176,38 @@ class SimulationViewModel : ViewModel() {
                         }
                     }
                 }
+            }
+        }
+
+        // Execute pending instructions.
+        _instructionsStatus.value = _instructionsStatus.value!!.onEach {
+            if (it.issued == _cycle.value!! - 1) {
+                it.executed = _cycle.value
+            }
+        }
+
+        // Decrement remaining cycles by one.
+        _addStations.value = _addStations.value!!.onEach {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+                it.remainingCycles = it.remainingCycles!! - 1
+            }
+        }
+
+        _mulStations.value = _mulStations.value!!.onEach {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+                it.remainingCycles = it.remainingCycles!! - 1
+            }
+        }
+
+        _loadBuffers.value = _loadBuffers.value!!.onEach {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+                it.remainingCycles = it.remainingCycles!! - 1
+            }
+        }
+
+        _storeBuffers.value = _storeBuffers.value!!.onEach {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+                it.remainingCycles = it.remainingCycles!! - 1
             }
         }
     }
