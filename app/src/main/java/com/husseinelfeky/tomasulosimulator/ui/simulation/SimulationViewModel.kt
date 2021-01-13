@@ -63,6 +63,146 @@ class SimulationViewModel : ViewModel() {
         // Increment cycle by one.
         _cycle.value = _cycle.value!! + 1
 
+        // Issue next instruction if available.
+        val nextInstSIndex = _instructionsStatus.value!!.indexOfNextInstructionStatus()
+        val nextInstS = if (nextInstSIndex != -1) {
+            _instructionsStatus.value!![nextInstSIndex]
+        } else {
+            null
+        }
+
+        if (nextInstS != null) {
+            val nextInst = nextInstS.instruction
+            when (nextInst.operation!!.baseOperation) {
+                BaseOperation.A -> {
+                    nextInst as RTypeInstruction
+                    val nextEmptyIndex = _addStations.value!!.indexOfNextEmpty()
+                    if (nextEmptyIndex != -1) {
+                        val rsTag = _registers.value!![nextInst.rs!!].tag
+                        val rtTag = _registers.value!![nextInst.rt!!].tag
+                        _addStations.value = _addStations.value!!.apply {
+                            this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rd
+                                operation = nextInst.operation
+                                if (rsTag == null) {
+                                    vj = nextInst.rs
+                                } else {
+                                    qj = rsTag.copy()
+                                }
+                                if (rtTag == null) {
+                                    vk = nextInst.rt
+                                } else {
+                                    qk = rtTag.copy()
+                                }
+                                isBusy = true
+                                instructionNumber = nextInst.number
+                                remainingCycles = nextInst.operation!!.cycles
+                            }
+                        }
+                        _registers.value = _registers.value!!.apply {
+                            this[nextInst.rd!!].tag =
+                                _addStations.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rd
+                                }
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[nextInstSIndex].issued = _cycle.value
+                        }
+                    }
+                }
+                BaseOperation.M -> {
+                    nextInst as RTypeInstruction
+                    val nextEmptyIndex = _mulStations.value!!.indexOfNextEmpty()
+                    if (nextEmptyIndex != -1) {
+                        val rsTag = _registers.value!![nextInst.rs!!].tag
+                        val rtTag = _registers.value!![nextInst.rt!!].tag
+                        _mulStations.value = _mulStations.value!!.apply {
+                            this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rd
+                                operation = nextInst.operation
+                                if (rsTag == null) {
+                                    vj = nextInst.rs
+                                } else {
+                                    qj = rsTag.copy()
+                                }
+                                if (rtTag == null) {
+                                    vk = nextInst.rt
+                                } else {
+                                    qk = rtTag.copy()
+                                }
+                                isBusy = true
+                                instructionNumber = nextInst.number
+                                remainingCycles = nextInst.operation!!.cycles
+                            }
+                        }
+                        _registers.value = _registers.value!!.apply {
+                            this[nextInst.rd!!].tag =
+                                _mulStations.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rd
+                                }
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[nextInstSIndex].issued = _cycle.value
+                        }
+                    }
+                }
+                BaseOperation.L -> {
+                    nextInst as ITypeInstruction
+                    val nextEmptyIndex = _loadBuffers.value!!.indexOfNextEmpty()
+                    if (nextEmptyIndex != -1) {
+                        _loadBuffers.value = _loadBuffers.value!!.apply {
+                            this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rt
+                                address = nextInst.address
+                                isBusy = true
+                                instructionNumber = nextInst.number
+                                remainingCycles = nextInst.operation!!.cycles
+                            }
+                        }
+                        _registers.value = _registers.value!!.apply {
+                            this[nextInst.rt!!].tag =
+                                _loadBuffers.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rt
+                                }
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[nextInstSIndex].issued = _cycle.value
+                        }
+                    }
+                }
+                BaseOperation.S -> {
+                    nextInst as ITypeInstruction
+                    val nextEmptyIndex = _storeBuffers.value!!.indexOfNextEmpty()
+                    if (nextEmptyIndex != -1) {
+                        val qTag = _registers.value!![nextInst.rt!!].tag
+                        _storeBuffers.value = _storeBuffers.value!!.apply {
+                            this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rt
+                                address = nextInst.address
+                                if (qTag == null) {
+                                    v = nextInst.rt
+                                } else {
+                                    q = qTag.copy()
+                                }
+                                isBusy = true
+                                instructionNumber = nextInst.number
+                                remainingCycles = nextInst.operation!!.cycles
+                            }
+                        }
+                        _registers.value = _registers.value!!.apply {
+                            this[nextInst.rt!!].tag =
+                                _storeBuffers.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rt
+                                }
+                        }
+                        _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                            this[nextInstSIndex].issued = _cycle.value
+                        }
+                    }
+                }
+            }
+        }
+
         // Write a computed instruction if there is any.
         var hasWritten = false
 
@@ -131,154 +271,6 @@ class SimulationViewModel : ViewModel() {
                         item.clear()
                         hasWritten = true
                         break
-                    }
-                }
-            }
-        }
-
-        // Issue next instruction if available.
-        val nextInstSIndex = _instructionsStatus.value!!.indexOfNextInstructionStatus()
-        val nextInstS = if (nextInstSIndex != -1) {
-            _instructionsStatus.value!![nextInstSIndex]
-        } else {
-            null
-        }
-
-        if (nextInstS != null) {
-            val nextInst = nextInstS.instruction
-            when (nextInst.operation!!.baseOperation) {
-                BaseOperation.A -> {
-                    nextInst as RTypeInstruction
-                    if (_registers.value!![nextInst.rd!!].tag == null) {
-                        val nextEmptyIndex = _addStations.value!!.indexOfNextEmpty()
-                        if (nextEmptyIndex != -1) {
-                            val rsTag = _registers.value!![nextInst.rs!!].tag
-                            val rtTag = _registers.value!![nextInst.rt!!].tag
-                            _addStations.value = _addStations.value!!.apply {
-                                this[nextEmptyIndex].apply {
-                                    tag.assignedRegister = nextInst.rd
-                                    operation = nextInst.operation
-                                    if (rsTag == null) {
-                                        vj = nextInst.rs
-                                    } else {
-                                        qj = rsTag.copy()
-                                    }
-                                    if (rtTag == null) {
-                                        vk = nextInst.rt
-                                    } else {
-                                        qk = rtTag.copy()
-                                    }
-                                    isBusy = true
-                                    instructionNumber = nextInst.number
-                                    remainingCycles = nextInst.operation!!.cycles
-                                }
-                            }
-                            _registers.value = _registers.value!!.apply {
-                                this[nextInst.rd!!].tag =
-                                    _addStations.value!![nextEmptyIndex].tag.apply {
-                                        assignedRegister = nextInst.rd
-                                    }
-                            }
-                            _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                                this[nextInstSIndex].issued = _cycle.value
-                            }
-                        }
-                    }
-                }
-                BaseOperation.M -> {
-                    nextInst as RTypeInstruction
-                    if (_registers.value!![nextInst.rd!!].tag == null) {
-                        val nextEmptyIndex = _mulStations.value!!.indexOfNextEmpty()
-                        if (nextEmptyIndex != -1) {
-                            val rsTag = _registers.value!![nextInst.rs!!].tag
-                            val rtTag = _registers.value!![nextInst.rt!!].tag
-                            _mulStations.value = _mulStations.value!!.apply {
-                                this[nextEmptyIndex].apply {
-                                    tag.assignedRegister = nextInst.rd
-                                    operation = nextInst.operation
-                                    if (rsTag == null) {
-                                        vj = nextInst.rs
-                                    } else {
-                                        qj = rsTag.copy()
-                                    }
-                                    if (rtTag == null) {
-                                        vk = nextInst.rt
-                                    } else {
-                                        qk = rtTag.copy()
-                                    }
-                                    isBusy = true
-                                    instructionNumber = nextInst.number
-                                    remainingCycles = nextInst.operation!!.cycles
-                                }
-                            }
-                            _registers.value = _registers.value!!.apply {
-                                this[nextInst.rd!!].tag =
-                                    _mulStations.value!![nextEmptyIndex].tag.apply {
-                                        assignedRegister = nextInst.rd
-                                    }
-                            }
-                            _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                                this[nextInstSIndex].issued = _cycle.value
-                            }
-                        }
-                    }
-                }
-                BaseOperation.L -> {
-                    nextInst as ITypeInstruction
-                    if (_registers.value!![nextInst.rt!!].tag == null) {
-                        val nextEmptyIndex = _loadBuffers.value!!.indexOfNextEmpty()
-                        if (nextEmptyIndex != -1) {
-                            _loadBuffers.value = _loadBuffers.value!!.apply {
-                                this[nextEmptyIndex].apply {
-                                    tag.assignedRegister = nextInst.rt
-                                    address = nextInst.address
-                                    isBusy = true
-                                    instructionNumber = nextInst.number
-                                    remainingCycles = nextInst.operation!!.cycles
-                                }
-                            }
-                            _registers.value = _registers.value!!.apply {
-                                this[nextInst.rt!!].tag =
-                                    _loadBuffers.value!![nextEmptyIndex].tag.apply {
-                                        assignedRegister = nextInst.rt
-                                    }
-                            }
-                            _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                                this[nextInstSIndex].issued = _cycle.value
-                            }
-                        }
-                    }
-                }
-                BaseOperation.S -> {
-                    nextInst as ITypeInstruction
-                    if (_registers.value!![nextInst.rt!!].tag == null) {
-                        val nextEmptyIndex = _storeBuffers.value!!.indexOfNextEmpty()
-                        if (nextEmptyIndex != -1) {
-                            val qTag = _registers.value!![nextInst.rt!!].tag
-                            _storeBuffers.value = _storeBuffers.value!!.apply {
-                                this[nextEmptyIndex].apply {
-                                    tag.assignedRegister = nextInst.rt
-                                    address = nextInst.address
-                                    if (qTag == null) {
-                                        v = nextInst.rt
-                                    } else {
-                                        q = qTag.copy()
-                                    }
-                                    isBusy = true
-                                    instructionNumber = nextInst.number
-                                    remainingCycles = nextInst.operation!!.cycles
-                                }
-                            }
-                            _registers.value = _registers.value!!.apply {
-                                this[nextInst.rt!!].tag =
-                                    _storeBuffers.value!![nextEmptyIndex].tag.apply {
-                                        assignedRegister = nextInst.rt
-                                    }
-                            }
-                            _instructionsStatus.value = _instructionsStatus.value!!.apply {
-                                this[nextInstSIndex].issued = _cycle.value
-                            }
-                        }
                     }
                 }
             }
