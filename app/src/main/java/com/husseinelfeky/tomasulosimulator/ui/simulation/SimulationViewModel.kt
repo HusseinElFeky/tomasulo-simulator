@@ -190,24 +190,44 @@ class SimulationViewModel : ViewModel() {
         _addStations.value = _addStations.value!!.onEach {
             if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
                 it.remainingCycles = it.remainingCycles!! - 1
+                if (it.remainingCycles == 0) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].computed = _cycle.value
+                    }
+                }
             }
         }
 
         _mulStations.value = _mulStations.value!!.onEach {
             if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
                 it.remainingCycles = it.remainingCycles!! - 1
+                if (it.remainingCycles == 0) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].computed = _cycle.value
+                    }
+                }
             }
         }
 
         _loadBuffers.value = _loadBuffers.value!!.onEach {
             if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
                 it.remainingCycles = it.remainingCycles!! - 1
+                if (it.remainingCycles == 0) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].computed = _cycle.value
+                    }
+                }
             }
         }
 
         _storeBuffers.value = _storeBuffers.value!!.onEach {
             if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
                 it.remainingCycles = it.remainingCycles!! - 1
+                if (it.remainingCycles == 0) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].computed = _cycle.value
+                    }
+                }
             }
         }
     }
