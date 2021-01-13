@@ -7,6 +7,7 @@ import com.husseinelfeky.tomasulosimulator.model.instruction.ITypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.RTypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.operation.BaseOperation
+import com.husseinelfeky.tomasulosimulator.model.operation.Operation
 import com.husseinelfeky.tomasulosimulator.model.simulation.LoadBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
@@ -166,12 +167,12 @@ class SimulationViewModel : ViewModel() {
                                     if (rsTag == null) {
                                         vj = nextInst.rs
                                     } else {
-                                        qj = rsTag
+                                        qj = rsTag.copy()
                                     }
                                     if (rtTag == null) {
                                         vk = nextInst.rt
                                     } else {
-                                        qk = rtTag
+                                        qk = rtTag.copy()
                                     }
                                     isBusy = true
                                     instructionNumber = nextInst.number
@@ -204,12 +205,12 @@ class SimulationViewModel : ViewModel() {
                                     if (rsTag == null) {
                                         vj = nextInst.rs
                                     } else {
-                                        qj = rsTag
+                                        qj = rsTag.copy()
                                     }
                                     if (rtTag == null) {
                                         vk = nextInst.rt
                                     } else {
-                                        qk = rtTag
+                                        qk = rtTag.copy()
                                     }
                                     isBusy = true
                                     instructionNumber = nextInst.number
@@ -267,7 +268,7 @@ class SimulationViewModel : ViewModel() {
                                     if (qTag == null) {
                                         v = nextInst.rt
                                     } else {
-                                        q = qTag
+                                        q = qTag.copy()
                                     }
                                     isBusy = true
                                     instructionNumber = nextInst.number
@@ -289,16 +290,15 @@ class SimulationViewModel : ViewModel() {
             }
         }
 
-        // Start executing just-issued instructions.
-        _instructionsStatus.value = _instructionsStatus.value!!.onEach {
-            if (it.issued == _cycle.value!! - 1) {
-                it.executed = _cycle.value
-            }
-        }
-
         // Execute ready instructions.
         _addStations.value = _addStations.value!!.onEach {
-            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].issued != _cycle.value) {
+                if (it.remainingCycles == it.operation!!.cycles) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].executed = _cycle.value
+                    }
+                }
+
                 it.remainingCycles = it.remainingCycles!! - 1
                 if (it.remainingCycles == 0) {
                     _instructionsStatus.value = _instructionsStatus.value!!.apply {
@@ -309,7 +309,13 @@ class SimulationViewModel : ViewModel() {
         }
 
         _mulStations.value = _mulStations.value!!.onEach {
-            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].issued != _cycle.value) {
+                if (it.remainingCycles == it.operation!!.cycles) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].executed = _cycle.value
+                    }
+                }
+
                 it.remainingCycles = it.remainingCycles!! - 1
                 if (it.remainingCycles == 0) {
                     _instructionsStatus.value = _instructionsStatus.value!!.apply {
@@ -320,7 +326,13 @@ class SimulationViewModel : ViewModel() {
         }
 
         _loadBuffers.value = _loadBuffers.value!!.onEach {
-            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].issued != _cycle.value) {
+                if (it.remainingCycles == Operation.LD.cycles) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].executed = _cycle.value
+                    }
+                }
+
                 it.remainingCycles = it.remainingCycles!! - 1
                 if (it.remainingCycles == 0) {
                     _instructionsStatus.value = _instructionsStatus.value!!.apply {
@@ -331,7 +343,13 @@ class SimulationViewModel : ViewModel() {
         }
 
         _storeBuffers.value = _storeBuffers.value!!.onEach {
-            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
+            if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].issued != _cycle.value) {
+                if (it.remainingCycles == Operation.SD.cycles) {
+                    _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                        this[it.instructionNumber!! - 1].executed = _cycle.value
+                    }
+                }
+
                 it.remainingCycles = it.remainingCycles!! - 1
                 if (it.remainingCycles == 0) {
                     _instructionsStatus.value = _instructionsStatus.value!!.apply {
