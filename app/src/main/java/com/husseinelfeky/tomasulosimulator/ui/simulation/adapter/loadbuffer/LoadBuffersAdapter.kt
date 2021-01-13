@@ -2,7 +2,7 @@ package com.husseinelfeky.tomasulosimulator.ui.simulation.adapter.loadbuffer
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.husseinelfeky.tomasulosimulator.model.simulation.LoadBuffer
+import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.LoadBuffer
 import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItemDiffUtil
 
 class LoadBuffersAdapter : ListAdapter<LoadBuffer, LoadBufferViewHolder>(

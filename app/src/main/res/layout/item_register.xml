@@ -14,4 +14,9 @@
         style="@style/SimulationField.Value"
         tools:text="A1" />
 
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/SimulationField.Value"
+        tools:text="2.85" />
+
 </LinearLayout>

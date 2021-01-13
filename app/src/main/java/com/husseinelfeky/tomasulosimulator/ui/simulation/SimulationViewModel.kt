@@ -8,14 +8,15 @@ import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.RTypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.operation.BaseOperation
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
-import com.husseinelfeky.tomasulosimulator.model.simulation.LoadBuffer
-import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
-import com.husseinelfeky.tomasulosimulator.model.simulation.StoreBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.base.SimulationItem.Companion.indexOfNextEmpty
+import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.LoadBuffer
+import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.StoreBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.hasSimulationFinished
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.indexOfNextInstructionStatus
+import com.husseinelfeky.tomasulosimulator.model.simulation.register.FPR
+import com.husseinelfeky.tomasulosimulator.utils.roundTo
 
 class SimulationViewModel : ViewModel() {
 
@@ -31,8 +32,8 @@ class SimulationViewModel : ViewModel() {
     val instructionsStatus: LiveData<List<InstructionStatus>>
         get() = _instructionsStatus
 
-    private val _registers = MutableLiveData(Register.getAll())
-    val registers: LiveData<List<Register>>
+    private val _registers = MutableLiveData(FPR.getAll())
+    val registers: LiveData<List<FPR>>
         get() = _registers
 
     private val _addStations = MutableLiveData(ReservationStation.getAddStations())
@@ -211,6 +212,19 @@ class SimulationViewModel : ViewModel() {
                 if (item.remainingCycles == 0) {
                     _registers.value = _registers.value!!.apply {
                         this[item.assignedRegister!!].tag = null
+                        this[item.assignedRegister!!].content = when (item.operation) {
+                            Operation.ADD -> {
+                                (_registers.value!![item.vj!!].content + _registers.value!![item.vk!!].content)
+                                    .roundTo(2)
+                            }
+                            Operation.SUB -> {
+                                (_registers.value!![item.vj!!].content - _registers.value!![item.vk!!].content)
+                                    .roundTo(2)
+                            }
+                            else -> {
+                                throw IllegalStateException("Operation ${item.operation} is not valid.")
+                            }
+                        }
                     }
                     _instructionsStatus.value = _instructionsStatus.value!!.apply {
                         this[item.instructionNumber!! - 1].written = _cycle.value
@@ -228,6 +242,19 @@ class SimulationViewModel : ViewModel() {
                     if (item.remainingCycles == 0) {
                         _registers.value = _registers.value!!.apply {
                             this[item.assignedRegister!!].tag = null
+                            this[item.assignedRegister!!].content = when (item.operation) {
+                                Operation.MUL -> {
+                                    (_registers.value!![item.vj!!].content * _registers.value!![item.vk!!].content)
+                                        .roundTo(2)
+                                }
+                                Operation.DIV -> {
+                                    (_registers.value!![item.vj!!].content / _registers.value!![item.vk!!].content)
+                                        .roundTo(2)
+                                }
+                                else -> {
+                                    throw IllegalStateException("Operation ${item.operation} is not valid.")
+                                }
+                            }
                         }
                         _instructionsStatus.value = _instructionsStatus.value!!.apply {
                             this[item.instructionNumber!! - 1].written = _cycle.value
@@ -375,7 +402,7 @@ class SimulationViewModel : ViewModel() {
             }
         }
 
-        // Check if simulation is finished.
+        // Check if simulation has finished.
         if (_instructionsStatus.value!!.hasSimulationFinished()) {
             _isSimulationEnded.value = true
         }

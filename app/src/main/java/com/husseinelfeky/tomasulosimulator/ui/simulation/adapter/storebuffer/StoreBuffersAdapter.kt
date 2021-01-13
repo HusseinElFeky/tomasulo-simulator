@@ -2,7 +2,7 @@ package com.husseinelfeky.tomasulosimulator.ui.simulation.adapter.storebuffer
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.husseinelfeky.tomasulosimulator.model.simulation.StoreBuffer
+import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.StoreBuffer
 import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItemDiffUtil
 
 class StoreBuffersAdapter : ListAdapter<StoreBuffer, StoreBufferViewHolder>(

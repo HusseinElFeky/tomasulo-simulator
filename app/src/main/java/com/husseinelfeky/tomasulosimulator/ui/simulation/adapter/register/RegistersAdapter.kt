@@ -2,10 +2,10 @@ package com.husseinelfeky.tomasulosimulator.ui.simulation.adapter.register
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.husseinelfeky.tomasulosimulator.model.simulation.Register
+import com.husseinelfeky.tomasulosimulator.model.simulation.register.FPR
 import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItemDiffUtil
 
-class RegistersAdapter : ListAdapter<Register, RegisterViewHolder>(
+class RegistersAdapter : ListAdapter<FPR, RegisterViewHolder>(
     DifferentiableItemDiffUtil.getInstance()
 ) {
 

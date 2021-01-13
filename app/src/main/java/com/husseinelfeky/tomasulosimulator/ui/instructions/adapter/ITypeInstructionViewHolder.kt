@@ -11,7 +11,8 @@ import com.husseinelfeky.tomasulosimulator.model.instruction.ITypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.InstructionType
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
-import com.husseinelfeky.tomasulosimulator.model.simulation.Register
+import com.husseinelfeky.tomasulosimulator.model.simulation.register.FPR
+import com.husseinelfeky.tomasulosimulator.model.simulation.register.GPR
 import kotlinx.android.synthetic.main.item_instruction_type_i.view.*
 
 class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -25,7 +26,7 @@ class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rt?.let {
-                tv_rt.setText(Register.getFName(it))
+                tv_rt.setText(FPR.getName(it))
             }
 
             instruction.offset?.let {
@@ -33,7 +34,7 @@ class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rs?.let {
-                tv_rs.setText(Register.getRName(it))
+                tv_rs.setText(GPR.getName(it))
             }
 
             val operations = Operation.values()
@@ -59,14 +60,14 @@ class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 ArrayAdapter(
                     context,
                     android.R.layout.simple_dropdown_item_1line,
-                    Register.getAllFNames()
+                    FPR.getAllNames()
                 )
             )
             tv_rs.setAdapter(
                 ArrayAdapter(
                     context,
                     android.R.layout.simple_dropdown_item_1line,
-                    Register.getAllRNames()
+                    GPR.getAllNames()
                 )
             )
 

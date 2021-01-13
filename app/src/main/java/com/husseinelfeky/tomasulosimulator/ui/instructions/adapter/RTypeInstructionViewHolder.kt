@@ -10,7 +10,7 @@ import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.InstructionType
 import com.husseinelfeky.tomasulosimulator.model.instruction.RTypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
-import com.husseinelfeky.tomasulosimulator.model.simulation.Register
+import com.husseinelfeky.tomasulosimulator.model.simulation.register.FPR
 import kotlinx.android.synthetic.main.item_instruction_type_r.view.*
 
 class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -24,15 +24,15 @@ class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rd?.let {
-                tv_rd.setText(Register.getFName(it))
+                tv_rd.setText(FPR.getName(it))
             }
 
             instruction.rs?.let {
-                tv_rs.setText(Register.getFName(it))
+                tv_rs.setText(FPR.getName(it))
             }
 
             instruction.rt?.let {
-                tv_rt.setText(Register.getFName(it))
+                tv_rt.setText(FPR.getName(it))
             }
 
             val operations = Operation.values()
@@ -54,7 +54,7 @@ class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 }
             }
 
-            val registers = Register.getAllFNames()
+            val registers = FPR.getAllNames()
             tv_rd.setAdapter(
                 ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, registers)
             )

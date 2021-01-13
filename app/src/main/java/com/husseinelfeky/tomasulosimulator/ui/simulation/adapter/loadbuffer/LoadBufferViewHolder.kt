@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
-import com.husseinelfeky.tomasulosimulator.model.simulation.LoadBuffer
+import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.LoadBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toFormattedString
 import kotlinx.android.synthetic.main.item_buffer_load.view.*
 

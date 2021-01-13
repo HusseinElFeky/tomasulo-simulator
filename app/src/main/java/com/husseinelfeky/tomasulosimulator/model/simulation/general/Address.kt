@@ -1,6 +1,6 @@
 package com.husseinelfeky.tomasulosimulator.model.simulation.general
 
-import com.husseinelfeky.tomasulosimulator.model.simulation.Register
+import com.husseinelfeky.tomasulosimulator.model.simulation.register.GPR
 
 data class Address(
     val offset: Int,
@@ -9,7 +9,7 @@ data class Address(
 
     companion object {
         fun Address.toFormattedString(): String {
-            return "$offset + ${Register.getRName(base)}"
+            return "$offset + ${GPR.getName(base)}"
         }
     }
 }
