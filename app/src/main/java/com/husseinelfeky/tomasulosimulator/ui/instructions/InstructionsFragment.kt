@@ -32,6 +32,7 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
         (requireActivity() as MainActivity).apply {
             supportActionBar?.subtitle = null
 
+            fab_action.isEnabled = true
             btn_action_secondary.visibility = View.VISIBLE
 
             fab_action.setImageResource(R.drawable.ic_add)

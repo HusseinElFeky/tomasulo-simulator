@@ -13,6 +13,7 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
 import com.husseinelfeky.tomasulosimulator.model.simulation.StoreBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.base.RowItem.Companion.indexOfNextEmpty
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.hasSimulationFinished
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.indexOfNextInstructionStatus
 
 class SimulationViewModel : ViewModel() {
@@ -20,6 +21,10 @@ class SimulationViewModel : ViewModel() {
     private val _cycle = MutableLiveData(0)
     val cycle: LiveData<Int>
         get() = _cycle
+
+    private val _isSimulationEnded = MutableLiveData(false)
+    val isSimulationEnded: LiveData<Boolean>
+        get() = _isSimulationEnded
 
     private val _instructionsStatus = MutableLiveData<List<InstructionStatus>>()
     val instructionsStatus: LiveData<List<InstructionStatus>>
@@ -326,6 +331,11 @@ class SimulationViewModel : ViewModel() {
                     }
                 }
             }
+        }
+
+        // Check if simulation is finished.
+        if (_instructionsStatus.value!!.hasSimulationFinished()) {
+            _isSimulationEnded.value = true
         }
     }
 }

@@ -19,5 +19,9 @@ data class InstructionStatus(
         fun List<InstructionStatus>.indexOfNextInstructionStatus(): Int {
             return indexOfFirst { it.issued == null }
         }
+
+        fun List<InstructionStatus>.hasSimulationFinished(): Boolean {
+            return indexOfFirst { it.written == null } == -1
+        }
     }
 }

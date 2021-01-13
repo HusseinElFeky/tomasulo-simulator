@@ -80,6 +80,10 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
             )
         }
 
+        viewModel.isSimulationEnded.observe(viewLifecycleOwner) { isSimulationEnded ->
+            (requireActivity() as MainActivity).fab_action.isEnabled = !isSimulationEnded
+        }
+
         viewModel.instructionsStatus.observe(viewLifecycleOwner) { list ->
             Timber.i("Cycle ${viewModel.cycle.value}: $list")
             instructionsStatusAdapter.submitList(list.map { it.copy() })
