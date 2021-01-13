@@ -12,6 +12,10 @@ data class ITypeInstruction(
     var offset: Int? = null
 ) : Instruction(number, operation, rs, rt) {
 
+    val address: Int
+        get() = rs?.let { offset?.plus(it) }
+            ?: throw UninitializedPropertyAccessException("Address is undefined.")
+
     override fun isValid(): Boolean {
         return operation != null && rs != null && rt != null && offset != null
     }

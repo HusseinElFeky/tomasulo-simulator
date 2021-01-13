@@ -5,7 +5,7 @@ import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItem
 
 data class Register(
     val number: Int,
-    val tag: Tag? = null
+    var tag: Tag? = null
 ) : DifferentiableItem {
 
     val name = "R$number"

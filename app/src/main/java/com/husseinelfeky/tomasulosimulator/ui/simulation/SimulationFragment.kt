@@ -15,6 +15,7 @@ import com.husseinelfeky.tomasulosimulator.ui.simulation.adapter.reservationstat
 import com.husseinelfeky.tomasulosimulator.ui.simulation.adapter.storebuffer.StoreBuffersAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_simulation.*
+import timber.log.Timber
 
 class SimulationFragment : Fragment(R.layout.fragment_simulation) {
 
@@ -72,35 +73,41 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
     }
 
     private fun initObservers() {
-        viewModel.cycle.observe(viewLifecycleOwner) {
+        viewModel.cycle.observe(viewLifecycleOwner) { cycle ->
             (requireActivity() as MainActivity).supportActionBar?.subtitle = getString(
                 R.string.format_cycle,
-                it
+                cycle
             )
         }
 
-        viewModel.instructionsStatus.observe(viewLifecycleOwner) {
-            instructionsStatusAdapter.submitList(ArrayList(it))
+        viewModel.instructionsStatus.observe(viewLifecycleOwner) { list ->
+            Timber.i("Cycle ${viewModel.cycle.value}: $list")
+            instructionsStatusAdapter.submitList(list.map { it.copy() })
         }
 
-        viewModel.registers.observe(viewLifecycleOwner) {
-            registersAdapter.submitList(ArrayList(it))
+        viewModel.registers.observe(viewLifecycleOwner) { list ->
+            Timber.i("Cycle ${viewModel.cycle.value}: $list")
+            registersAdapter.submitList(list.map { it.copy() })
         }
 
-        viewModel.addStations.observe(viewLifecycleOwner) {
-            addStationsAdapter.submitList(ArrayList(it))
+        viewModel.addStations.observe(viewLifecycleOwner) { list ->
+            Timber.i("Cycle ${viewModel.cycle.value}: $list")
+            addStationsAdapter.submitList(list.map { it.copy() })
         }
 
-        viewModel.mulStations.observe(viewLifecycleOwner) {
-            mulStationsAdapter.submitList(ArrayList(it))
+        viewModel.mulStations.observe(viewLifecycleOwner) { list ->
+            Timber.i("Cycle ${viewModel.cycle.value}: $list")
+            mulStationsAdapter.submitList(list.map { it.copy() })
         }
 
-        viewModel.loadBuffers.observe(viewLifecycleOwner) {
-            loadBuffersAdapter.submitList(ArrayList(it))
+        viewModel.loadBuffers.observe(viewLifecycleOwner) { list ->
+            Timber.i("Cycle ${viewModel.cycle.value}: $list")
+            loadBuffersAdapter.submitList(list.map { it.copy() })
         }
 
-        viewModel.storeBuffers.observe(viewLifecycleOwner) {
-            storeBuffersAdapter.submitList(ArrayList(it))
+        viewModel.storeBuffers.observe(viewLifecycleOwner) { list ->
+            Timber.i("Cycle ${viewModel.cycle.value}: $list")
+            storeBuffersAdapter.submitList(list.map { it.copy() })
         }
     }
 }

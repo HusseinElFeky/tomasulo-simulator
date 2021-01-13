@@ -6,11 +6,11 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
 
 data class StoreBuffer(
     override val tag: Tag,
-    override val address: Double? = null,
-    val v: Int? = null,
-    val q: Tag? = null,
-    override val isBusy: Boolean = false,
-    override val remainingCycles: Int? = null
+    override var address: Int? = null,
+    var v: Int? = null,
+    var q: Tag? = null,
+    override var isBusy: Boolean = false,
+    override var remainingCycles: Int? = null
 ) : Buffer(tag, address, isBusy, remainingCycles) {
 
     companion object {

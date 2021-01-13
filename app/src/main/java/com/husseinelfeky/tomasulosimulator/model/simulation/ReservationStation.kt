@@ -7,13 +7,13 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
 
 data class ReservationStation(
     override val tag: Tag,
-    val operation: Operation? = null,
-    val vj: Int? = null,
-    val vk: Int? = null,
-    val qj: Tag? = null,
-    val qk: Tag? = null,
-    override val isBusy: Boolean = false,
-    override val remainingCycles: Int? = null
+    var operation: Operation? = null,
+    var vj: Int? = null,
+    var vk: Int? = null,
+    var qj: Tag? = null,
+    var qk: Tag? = null,
+    override var isBusy: Boolean = false,
+    override var remainingCycles: Int? = null
 ) : RowItem(tag, isBusy, remainingCycles) {
 
     companion object {

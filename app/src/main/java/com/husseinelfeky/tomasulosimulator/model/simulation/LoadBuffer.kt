@@ -6,9 +6,9 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
 
 data class LoadBuffer(
     override val tag: Tag,
-    override val address: Double? = null,
-    override val isBusy: Boolean = false,
-    override val remainingCycles: Int? = null
+    override var address: Int? = null,
+    override var isBusy: Boolean = false,
+    override var remainingCycles: Int? = null
 ) : Buffer(tag, address, isBusy, remainingCycles) {
 
     companion object {

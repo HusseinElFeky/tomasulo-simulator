@@ -12,4 +12,10 @@ abstract class RowItem(
     override fun getUniqueIdentifier(): Any = tag.id
 
     override fun getContent(): String = toString()
+
+    companion object {
+        fun List<RowItem>.indexOfNextEmpty(): Int {
+            return indexOfFirst { !it.isBusy }
+        }
+    }
 }

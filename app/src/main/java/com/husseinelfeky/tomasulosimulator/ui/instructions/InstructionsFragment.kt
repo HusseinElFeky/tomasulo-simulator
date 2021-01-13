@@ -67,9 +67,9 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
     }
 
     private fun initObservers() {
-        viewModel.instructions.observe(viewLifecycleOwner) {
-            Timber.i(it.toString())
-            instructionsAdapter.submitList(ArrayList(it))
+        viewModel.instructions.observe(viewLifecycleOwner) { list ->
+            Timber.i("Instructions: $list")
+            instructionsAdapter.submitList(list.toList())
         }
     }
 }
