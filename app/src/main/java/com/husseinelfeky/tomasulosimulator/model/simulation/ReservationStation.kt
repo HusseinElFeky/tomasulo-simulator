@@ -22,6 +22,7 @@ data class ReservationStation(
     }
 
     override fun clear() {
+        tag.assignedRegister = null
         operation = null
         vj = null
         vk = null

@@ -57,6 +57,85 @@ class SimulationViewModel : ViewModel() {
         // Increment cycle by one.
         _cycle.value = _cycle.value!! + 1
 
+        // Write computed instructions.
+        _addStations.value = _addStations.value!!.onEach {
+            if (it.remainingCycles == 0) {
+                _registers.value = _registers.value!!.apply {
+                    this[it.assignedRegister!!].tag = null
+                }
+                _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                    this[it.instructionNumber!! - 1].written = _cycle.value
+                }
+                it.clear()
+            }
+        }
+
+        _mulStations.value = _mulStations.value!!.onEach {
+            if (it.remainingCycles == 0) {
+                _registers.value = _registers.value!!.apply {
+                    this[it.assignedRegister!!].tag = null
+                }
+                _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                    this[it.instructionNumber!! - 1].written = _cycle.value
+                }
+                it.clear()
+            }
+        }
+
+        _loadBuffers.value = _loadBuffers.value!!.onEach {
+            if (it.remainingCycles == 0) {
+                _registers.value = _registers.value!!.apply {
+                    this[it.assignedRegister!!].tag = null
+                }
+                _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                    this[it.instructionNumber!! - 1].written = _cycle.value
+                }
+                it.clear()
+            }
+        }
+
+        _storeBuffers.value = _storeBuffers.value!!.onEach {
+            if (it.remainingCycles == 0) {
+                _registers.value = _registers.value!!.apply {
+                    this[it.assignedRegister!!].tag = null
+                }
+                _instructionsStatus.value = _instructionsStatus.value!!.apply {
+                    this[it.instructionNumber!! - 1].written = _cycle.value
+                }
+                it.clear()
+            }
+        }
+
+        // Publish written results to all reservation stations and store buffers.
+        _addStations.value = _addStations.value!!.onEach {
+            if (it.qj != null && _registers.value!![it.qj!!.id].tag == null) {
+                it.vj = it.qj!!.assignedRegister
+                it.qj = null
+            }
+            if (it.qk != null && _registers.value!![it.qk!!.id].tag == null) {
+                it.vk = it.qk!!.assignedRegister
+                it.qk = null
+            }
+        }
+
+        _mulStations.value = _mulStations.value!!.onEach {
+            if (it.qj != null && _registers.value!![it.qj!!.id].tag == null) {
+                it.vj = it.qj!!.assignedRegister
+                it.qj = null
+            }
+            if (it.qk != null && _registers.value!![it.qk!!.id].tag == null) {
+                it.vk = it.qk!!.assignedRegister
+                it.qk = null
+            }
+        }
+
+        _storeBuffers.value = _storeBuffers.value!!.onEach {
+            if (it.q != null && _registers.value!![it.q!!.id].tag == null) {
+                it.v = it.q!!.assignedRegister
+                it.q = null
+            }
+        }
+
         // Issue next instruction if available.
         val nextInstSIndex = _instructionsStatus.value!!.indexOfNextInstructionStatus()
         val nextInstS = if (nextInstSIndex != -1) {
@@ -76,6 +155,7 @@ class SimulationViewModel : ViewModel() {
                         val rtTag = _registers.value!![nextInst.rt!!].tag
                         _addStations.value = _addStations.value!!.apply {
                             this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rd
                                 operation = nextInst.operation
                                 if (rsTag == null) {
                                     vj = nextInst.rs
@@ -93,7 +173,10 @@ class SimulationViewModel : ViewModel() {
                             }
                         }
                         _registers.value = _registers.value!!.apply {
-                            this[nextInst.rd!!].tag = _addStations.value!![nextEmptyIndex].tag
+                            this[nextInst.rd!!].tag =
+                                _addStations.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rd
+                                }
                         }
                         _instructionsStatus.value = _instructionsStatus.value!!.apply {
                             this[nextInstSIndex].issued = _cycle.value
@@ -108,6 +191,7 @@ class SimulationViewModel : ViewModel() {
                         val rtTag = _registers.value!![nextInst.rt!!].tag
                         _mulStations.value = _mulStations.value!!.apply {
                             this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rd
                                 operation = nextInst.operation
                                 if (rsTag == null) {
                                     vj = nextInst.rs
@@ -125,7 +209,10 @@ class SimulationViewModel : ViewModel() {
                             }
                         }
                         _registers.value = _registers.value!!.apply {
-                            this[nextInst.rd!!].tag = _mulStations.value!![nextEmptyIndex].tag
+                            this[nextInst.rd!!].tag =
+                                _mulStations.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rd
+                                }
                         }
                         _instructionsStatus.value = _instructionsStatus.value!!.apply {
                             this[nextInstSIndex].issued = _cycle.value
@@ -138,6 +225,7 @@ class SimulationViewModel : ViewModel() {
                     if (nextEmptyIndex != -1) {
                         _loadBuffers.value = _loadBuffers.value!!.apply {
                             this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rt
                                 address = nextInst.address
                                 isBusy = true
                                 instructionNumber = nextInst.number
@@ -145,7 +233,10 @@ class SimulationViewModel : ViewModel() {
                             }
                         }
                         _registers.value = _registers.value!!.apply {
-                            this[nextInst.rt!!].tag = _loadBuffers.value!![nextEmptyIndex].tag
+                            this[nextInst.rt!!].tag =
+                                _loadBuffers.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rt
+                                }
                         }
                         _instructionsStatus.value = _instructionsStatus.value!!.apply {
                             this[nextInstSIndex].issued = _cycle.value
@@ -159,6 +250,7 @@ class SimulationViewModel : ViewModel() {
                         val qTag = _registers.value!![nextInst.rt!!].tag
                         _storeBuffers.value = _storeBuffers.value!!.apply {
                             this[nextEmptyIndex].apply {
+                                tag.assignedRegister = nextInst.rt
                                 address = nextInst.address
                                 if (qTag == null) {
                                     v = nextInst.rt
@@ -171,7 +263,10 @@ class SimulationViewModel : ViewModel() {
                             }
                         }
                         _registers.value = _registers.value!!.apply {
-                            this[nextInst.rt!!].tag = _storeBuffers.value!![nextEmptyIndex].tag
+                            this[nextInst.rt!!].tag =
+                                _storeBuffers.value!![nextEmptyIndex].tag.apply {
+                                    assignedRegister = nextInst.rt
+                                }
                         }
                         _instructionsStatus.value = _instructionsStatus.value!!.apply {
                             this[nextInstSIndex].issued = _cycle.value
@@ -181,14 +276,14 @@ class SimulationViewModel : ViewModel() {
             }
         }
 
-        // Execute pending instructions.
+        // Start executing just-issued instructions.
         _instructionsStatus.value = _instructionsStatus.value!!.onEach {
             if (it.issued == _cycle.value!! - 1) {
                 it.executed = _cycle.value
             }
         }
 
-        // Decrement remaining cycles by one.
+        // Execute ready instructions.
         _addStations.value = _addStations.value!!.onEach {
             if (it.canExecute() && _instructionsStatus.value!![it.instructionNumber!! - 1].executed != null) {
                 it.remainingCycles = it.remainingCycles!! - 1

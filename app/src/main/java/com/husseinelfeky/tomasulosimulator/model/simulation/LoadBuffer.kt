@@ -17,6 +17,7 @@ data class LoadBuffer(
     }
 
     override fun clear() {
+        tag.assignedRegister = null
         address = null
         isBusy = false
         instructionNumber = null

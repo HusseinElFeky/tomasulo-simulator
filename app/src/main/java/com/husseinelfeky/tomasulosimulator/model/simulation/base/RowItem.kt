@@ -10,6 +10,9 @@ abstract class RowItem(
     open val remainingCycles: Int?
 ) : DifferentiableItem {
 
+    val assignedRegister: Int?
+        get() = tag.assignedRegister
+
     abstract fun canExecute(): Boolean
 
     abstract fun clear()

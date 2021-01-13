@@ -19,6 +19,7 @@ data class StoreBuffer(
     }
 
     override fun clear() {
+        tag.assignedRegister = null
         address = null
         v = null
         q = null
