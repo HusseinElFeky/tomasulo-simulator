@@ -1,6 +1,7 @@
 package com.husseinelfeky.tomasulosimulator.model.instruction
 
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -12,9 +13,12 @@ data class ITypeInstruction(
     var offset: Int? = null
 ) : Instruction(number, operation, rs, rt) {
 
-    val address: Int
-        get() = rs?.let { offset?.plus(it) }
-            ?: throw UninitializedPropertyAccessException("Address is undefined.")
+    val address: Address
+        get() = if (offset != null && rs != null) {
+            Address(offset!!, rs!!)
+        } else {
+            throw UninitializedPropertyAccessException("Address is undefined.")
+        }
 
     override fun isValid(): Boolean {
         return operation != null && rs != null && rt != null && offset != null
