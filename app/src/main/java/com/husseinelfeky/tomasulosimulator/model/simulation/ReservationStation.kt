@@ -2,7 +2,7 @@ package com.husseinelfeky.tomasulosimulator.model.simulation
 
 import com.husseinelfeky.tomasulosimulator.model.operation.BaseOperation
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
-import com.husseinelfeky.tomasulosimulator.model.simulation.base.RowItem
+import com.husseinelfeky.tomasulosimulator.model.simulation.base.SimulationItem
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
 
 data class ReservationStation(
@@ -15,7 +15,7 @@ data class ReservationStation(
     override var isBusy: Boolean = false,
     override var instructionNumber: Int? = null,
     override var remainingCycles: Int? = null
-) : RowItem(tag, isBusy, instructionNumber, remainingCycles) {
+) : SimulationItem(tag, isBusy, instructionNumber, remainingCycles) {
 
     override fun canExecute(): Boolean {
         return isBusy && remainingCycles != 0 && vj != null && vk != null

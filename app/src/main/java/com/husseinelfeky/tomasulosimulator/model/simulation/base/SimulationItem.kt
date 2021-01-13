@@ -3,7 +3,7 @@ package com.husseinelfeky.tomasulosimulator.model.simulation.base
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
 import com.husseinelfeky.tomasulosimulator.utils.adapter.DifferentiableItem
 
-abstract class RowItem(
+abstract class SimulationItem(
     open val tag: Tag,
     open val isBusy: Boolean,
     open val instructionNumber: Int?,
@@ -22,7 +22,7 @@ abstract class RowItem(
     override fun getContent(): String = toString()
 
     companion object {
-        fun List<RowItem>.indexOfNextEmpty(): Int {
+        fun List<SimulationItem>.indexOfNextEmpty(): Int {
             return indexOfFirst { !it.isBusy }
         }
     }

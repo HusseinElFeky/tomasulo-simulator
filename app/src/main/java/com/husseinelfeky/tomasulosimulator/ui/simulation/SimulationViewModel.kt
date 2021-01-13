@@ -12,7 +12,7 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.LoadBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
 import com.husseinelfeky.tomasulosimulator.model.simulation.StoreBuffer
-import com.husseinelfeky.tomasulosimulator.model.simulation.base.RowItem.Companion.indexOfNextEmpty
+import com.husseinelfeky.tomasulosimulator.model.simulation.base.SimulationItem.Companion.indexOfNextEmpty
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.hasSimulationFinished
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.indexOfNextInstructionStatus
