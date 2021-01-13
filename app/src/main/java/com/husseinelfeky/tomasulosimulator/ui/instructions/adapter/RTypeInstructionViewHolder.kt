@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
-import com.husseinelfeky.tomasulosimulator.model.instruction.ITypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.InstructionType
 import com.husseinelfeky.tomasulosimulator.model.instruction.RTypeInstruction
@@ -25,15 +24,15 @@ class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rd?.let {
-                tv_rd.setText(Register.getName(it))
+                tv_rd.setText(Register.getFName(it))
             }
 
             instruction.rs?.let {
-                tv_rs.setText(Register.getName(it))
+                tv_rs.setText(Register.getFName(it))
             }
 
             instruction.rt?.let {
-                tv_rt.setText(Register.getName(it))
+                tv_rt.setText(Register.getFName(it))
             }
 
             val operations = Operation.values()
@@ -48,14 +47,14 @@ class RTypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 val selectedOperation = operations[position]
 
                 if (selectedOperation.instructionType == InstructionType.TYPE_I) {
-                    onInstructionUpdate(ITypeInstruction(instruction.number, selectedOperation))
+                    onInstructionUpdate(instruction.toITypeInstruction(selectedOperation))
                 } else {
                     instruction.operation = selectedOperation
                     onInstructionUpdate(instruction)
                 }
             }
 
-            val registers = Register.getAllNames()
+            val registers = Register.getAllFNames()
             tv_rd.setAdapter(
                 ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, registers)
             )

@@ -10,7 +10,6 @@ import com.husseinelfeky.tomasulosimulator.R
 import com.husseinelfeky.tomasulosimulator.model.instruction.ITypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.Instruction
 import com.husseinelfeky.tomasulosimulator.model.instruction.InstructionType
-import com.husseinelfeky.tomasulosimulator.model.instruction.RTypeInstruction
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
 import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import kotlinx.android.synthetic.main.item_instruction_type_i.view.*
@@ -26,7 +25,7 @@ class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rt?.let {
-                tv_rt.setText(Register.getName(it))
+                tv_rt.setText(Register.getFName(it))
             }
 
             instruction.offset?.let {
@@ -34,7 +33,7 @@ class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
             instruction.rs?.let {
-                tv_rs.setText(Register.getName(it))
+                tv_rs.setText(Register.getRName(it))
             }
 
             val operations = Operation.values()
@@ -49,19 +48,26 @@ class ITypeInstructionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 val selectedOperation = operations[position]
 
                 if (selectedOperation.instructionType == InstructionType.TYPE_R) {
-                    onInstructionUpdate(RTypeInstruction(instruction.number, selectedOperation))
+                    onInstructionUpdate(instruction.toRTypeInstruction(selectedOperation))
                 } else {
                     instruction.operation = selectedOperation
                     onInstructionUpdate(instruction)
                 }
             }
 
-            val registers = Register.getAllNames()
             tv_rt.setAdapter(
-                ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, registers)
+                ArrayAdapter(
+                    context,
+                    android.R.layout.simple_dropdown_item_1line,
+                    Register.getAllFNames()
+                )
             )
             tv_rs.setAdapter(
-                ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, registers)
+                ArrayAdapter(
+                    context,
+                    android.R.layout.simple_dropdown_item_1line,
+                    Register.getAllRNames()
+                )
             )
 
             tv_rt.setOnItemClickListener { _, _, position, _ ->

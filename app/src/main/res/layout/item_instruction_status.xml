@@ -13,8 +13,8 @@
     <TextView
         android:id="@+id/tv_instruction"
         style="@style/SimulationField.Label"
-        android:layout_weight="2.25"
-        tools:text="ADD R1, R2, R3" />
+        android:layout_weight="2.5"
+        tools:text="ADD.D F1, F2, F3" />
 
     <TextView
         android:id="@+id/tv_issued"

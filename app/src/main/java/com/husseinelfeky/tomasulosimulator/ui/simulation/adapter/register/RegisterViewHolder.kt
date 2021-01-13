@@ -12,7 +12,7 @@ class RegisterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(register: Register) {
         with(itemView) {
-            tv_name.text = register.name
+            tv_name.text = register.fName
             tv_tag.text = register.tag?.name ?: "-"
         }
     }

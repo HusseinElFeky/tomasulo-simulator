@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/tv_name"
         style="@style/SimulationField.Label"
-        tools:text="R7" />
+        tools:text="F7" />
 
     <TextView
         android:id="@+id/tv_tag"

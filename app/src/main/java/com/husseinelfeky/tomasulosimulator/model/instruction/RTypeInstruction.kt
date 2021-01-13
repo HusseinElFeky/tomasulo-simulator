@@ -1,6 +1,7 @@
 package com.husseinelfeky.tomasulosimulator.model.instruction
 
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
+import com.husseinelfeky.tomasulosimulator.model.simulation.Register.Companion.getFName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -17,7 +18,7 @@ data class RTypeInstruction(
     }
 
     override fun toFormattedString(): String {
-        return "${operation?.exactName} R$rd, R$rs, R$rt"
+        return "${operation!!.exactName} ${getFName(rd!!)}, ${getFName(rs!!)}, ${getFName(rt!!)}"
     }
 
     fun toITypeInstruction(operation: Operation): ITypeInstruction {

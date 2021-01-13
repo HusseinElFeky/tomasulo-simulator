@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
+import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
 import kotlinx.android.synthetic.main.item_reservation_station.view.*
 
@@ -16,12 +17,12 @@ class ReservationStationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tv_tag.text = reservationStation.tag.name
             tv_operation.text = reservationStation.operation?.toString() ?: "-"
             tv_vj.text = if (reservationStation.vj != null) {
-                "R[R${reservationStation.vj}]"
+                "R[${Register.getFName(reservationStation.vj!!)}]"
             } else {
                 "-"
             }
             tv_vk.text = if (reservationStation.vk != null) {
-                "R[R${reservationStation.vk}]"
+                "R[${Register.getFName(reservationStation.vk!!)}]"
             } else {
                 "-"
             }

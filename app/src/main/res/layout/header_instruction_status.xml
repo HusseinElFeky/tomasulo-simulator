@@ -10,7 +10,7 @@
 
     <TextView
         style="@style/SimulationField.Label.Header"
-        android:layout_weight="2.25"
+        android:layout_weight="2.5"
         android:text="Instruction" />
 
     <TextView

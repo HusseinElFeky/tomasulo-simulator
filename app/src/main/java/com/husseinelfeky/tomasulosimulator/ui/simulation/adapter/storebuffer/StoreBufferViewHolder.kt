@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
+import com.husseinelfeky.tomasulosimulator.model.simulation.Register
 import com.husseinelfeky.tomasulosimulator.model.simulation.StoreBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toFormattedString
 import kotlinx.android.synthetic.main.item_buffer_store.view.*
@@ -17,7 +18,7 @@ class StoreBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tv_tag.text = storeBuffer.tag.name
             tv_address.text = storeBuffer.address?.toFormattedString() ?: "-"
             tv_v.text = if (storeBuffer.v != null) {
-                "R[R${storeBuffer.v}]"
+                "R[${Register.getFName(storeBuffer.v!!)}]"
             } else {
                 "-"
             }

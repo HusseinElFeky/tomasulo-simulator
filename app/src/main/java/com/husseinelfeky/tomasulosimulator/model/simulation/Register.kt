@@ -8,7 +8,11 @@ data class Register(
     var tag: Tag? = null
 ) : DifferentiableItem {
 
-    val name = "R$number"
+    val rName: String
+        get() = getRName(number)
+
+    val fName: String
+        get() = getFName(number)
 
     override fun getUniqueIdentifier(): Any = number
 
@@ -17,12 +21,20 @@ data class Register(
     companion object {
         private const val REGISTER_COUNT = 16
 
-        fun getName(number: Int): String {
+        fun getRName(number: Int): String {
             return "R$number"
         }
 
-        fun getAllNames(): List<String> {
-            return (0 until REGISTER_COUNT).toList().map { getName(it) }
+        fun getFName(number: Int): String {
+            return "F$number"
+        }
+
+        fun getAllRNames(): List<String> {
+            return (0 until REGISTER_COUNT).toList().map { getRName(it) }
+        }
+
+        fun getAllFNames(): List<String> {
+            return (0 until REGISTER_COUNT).toList().map { getFName(it) }
         }
 
         fun getAll(): List<Register> {
