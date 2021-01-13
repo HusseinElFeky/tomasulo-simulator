@@ -43,7 +43,7 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
             btn_action_secondary.visibility = View.GONE
 
             fab_action.setImageResource(R.drawable.ic_play)
-            btn_action_primary.text = getString(R.string.exit)
+            btn_action_primary.text = getString(R.string.exit_simulation)
         }
 
         viewModel.initInstructions(args.instructions)
@@ -74,7 +74,7 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
 
     private fun initObservers() {
         viewModel.cycle.observe(viewLifecycleOwner) { cycle ->
-            (requireActivity() as MainActivity).supportActionBar?.subtitle = getString(
+            (requireActivity() as MainActivity).supportActionBar?.title = getString(
                 R.string.format_cycle,
                 cycle
             )

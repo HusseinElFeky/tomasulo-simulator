@@ -11,6 +11,6 @@
 
     <string name="proceed">Proceed</string>
     <string name="clear">Clear</string>
-    <string name="exit">Exit</string>
+    <string name="exit_simulation">Exit Simulation</string>
 
 </resources>
