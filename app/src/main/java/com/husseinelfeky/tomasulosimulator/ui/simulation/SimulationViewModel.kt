@@ -46,8 +46,10 @@ class SimulationViewModel : ViewModel() {
         get() = _storeBuffers
 
     fun initInstructions(instructionsArray: Array<Instruction>) {
-        _instructionsStatus.value = instructionsArray.map {
-            it.toInstructionStatus()
+        if (_instructionsStatus.value == null) {
+            _instructionsStatus.value = instructionsArray.map {
+                it.toInstructionStatus()
+            }
         }
     }
 
