@@ -16,6 +16,7 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Comp
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.hasSimulationFinished
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.indexOfNextInstructionStatus
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.ValueReference
 import com.husseinelfeky.tomasulosimulator.model.simulation.register.FPR
 import com.husseinelfeky.tomasulosimulator.utils.roundTo
 
@@ -114,21 +115,21 @@ class SimulationViewModel : ViewModel() {
                     nextInst as RTypeInstruction
                     if (canIssue(nextInst)) {
                         val nextEmptyIndex = _addStations.value!!.indexOfNextEmpty()
-                        val rsTag = _registers.value!![nextInst.rs!!].tag
-                        val rtTag = _registers.value!![nextInst.rt!!].tag
+                        val rsRegister = _registers.value!![nextInst.rs!!]
+                        val rtRegister = _registers.value!![nextInst.rt!!]
                         _addStations.value = _addStations.value!!.apply {
                             this[nextEmptyIndex].apply {
                                 tag.assignedRegister = nextInst.rd
                                 operation = nextInst.operation
-                                if (rsTag == null) {
-                                    vj = nextInst.rs
+                                if (rsRegister.tag == null) {
+                                    vj = ValueReference(rsRegister.content, nextInst.rs!!)
                                 } else {
-                                    qj = rsTag.copy()
+                                    qj = rsRegister.tag!!.copy()
                                 }
-                                if (rtTag == null) {
-                                    vk = nextInst.rt
+                                if (rtRegister.tag == null) {
+                                    vk = ValueReference(rtRegister.content, nextInst.rt!!)
                                 } else {
-                                    qk = rtTag.copy()
+                                    qk = rtRegister.tag!!.copy()
                                 }
                                 isBusy = true
                                 instructionNumber = nextInst.number
@@ -150,21 +151,21 @@ class SimulationViewModel : ViewModel() {
                     nextInst as RTypeInstruction
                     if (canIssue(nextInst)) {
                         val nextEmptyIndex = _mulStations.value!!.indexOfNextEmpty()
-                        val rsTag = _registers.value!![nextInst.rs!!].tag
-                        val rtTag = _registers.value!![nextInst.rt!!].tag
+                        val rsRegister = _registers.value!![nextInst.rs!!]
+                        val rtRegister = _registers.value!![nextInst.rt!!]
                         _mulStations.value = _mulStations.value!!.apply {
                             this[nextEmptyIndex].apply {
                                 tag.assignedRegister = nextInst.rd
                                 operation = nextInst.operation
-                                if (rsTag == null) {
-                                    vj = nextInst.rs
+                                if (rsRegister.tag == null) {
+                                    vj = ValueReference(rsRegister.content, nextInst.rs!!)
                                 } else {
-                                    qj = rsTag.copy()
+                                    qj = rsRegister.tag!!.copy()
                                 }
-                                if (rtTag == null) {
-                                    vk = nextInst.rt
+                                if (rtRegister.tag == null) {
+                                    vk = ValueReference(rtRegister.content, nextInst.rt!!)
                                 } else {
-                                    qk = rtTag.copy()
+                                    qk = rtRegister.tag!!.copy()
                                 }
                                 isBusy = true
                                 instructionNumber = nextInst.number
@@ -210,15 +211,15 @@ class SimulationViewModel : ViewModel() {
                     nextInst as ITypeInstruction
                     if (canIssue(nextInst)) {
                         val nextEmptyIndex = _storeBuffers.value!!.indexOfNextEmpty()
-                        val qTag = _registers.value!![nextInst.rt!!].tag
+                        val rtRegister = _registers.value!![nextInst.rt!!]
                         _storeBuffers.value = _storeBuffers.value!!.apply {
                             this[nextEmptyIndex].apply {
                                 tag.assignedRegister = nextInst.rt
                                 address = nextInst.address
-                                if (qTag == null) {
-                                    v = nextInst.rt
+                                if (rtRegister.tag == null) {
+                                    v = ValueReference(rtRegister.content, nextInst.rt!!)
                                 } else {
-                                    q = qTag.copy()
+                                    q = rtRegister.tag!!.copy()
                                 }
                                 isBusy = true
                                 instructionNumber = nextInst.number
@@ -249,12 +250,10 @@ class SimulationViewModel : ViewModel() {
                         this[item.assignedRegister!!].tag = null
                         this[item.assignedRegister!!].content = when (item.operation) {
                             Operation.ADD -> {
-                                (_registers.value!![item.vj!!].content + _registers.value!![item.vk!!].content)
-                                    .roundTo(2)
+                                (item.vj!!.value + item.vk!!.value).roundTo(2)
                             }
                             Operation.SUB -> {
-                                (_registers.value!![item.vj!!].content - _registers.value!![item.vk!!].content)
-                                    .roundTo(2)
+                                (item.vj!!.value - item.vk!!.value).roundTo(2)
                             }
                             else -> {
                                 throw IllegalStateException("Operation ${item.operation} is not valid.")
@@ -279,12 +278,10 @@ class SimulationViewModel : ViewModel() {
                             this[item.assignedRegister!!].tag = null
                             this[item.assignedRegister!!].content = when (item.operation) {
                                 Operation.MUL -> {
-                                    (_registers.value!![item.vj!!].content * _registers.value!![item.vk!!].content)
-                                        .roundTo(2)
+                                    (item.vj!!.value * item.vk!!.value).roundTo(2)
                                 }
                                 Operation.DIV -> {
-                                    (_registers.value!![item.vj!!].content / _registers.value!![item.vk!!].content)
-                                        .roundTo(2)
+                                    (item.vj!!.value / item.vk!!.value).roundTo(2)
                                 }
                                 else -> {
                                     throw IllegalStateException("Operation ${item.operation} is not valid.")
@@ -409,31 +406,46 @@ class SimulationViewModel : ViewModel() {
 
         // Publish written results to all reservation stations and store buffers.
         _addStations.value = _addStations.value!!.onEach {
-            if (it.qj != null && _registers.value!![it.qj!!.assignedRegister!!].tag == null) {
-                it.vj = it.qj!!.assignedRegister
-                it.qj = null
+            if (it.qj != null) {
+                val rsRegister = _registers.value!![it.qj!!.assignedRegister!!]
+                if (rsRegister.tag == null) {
+                    it.vj = ValueReference(rsRegister.content, it.qj!!.assignedRegister!!)
+                    it.qj = null
+                }
             }
-            if (it.qk != null && _registers.value!![it.qk!!.assignedRegister!!].tag == null) {
-                it.vk = it.qk!!.assignedRegister
-                it.qk = null
+            if (it.qk != null) {
+                val rtRegister = _registers.value!![it.qk!!.assignedRegister!!]
+                if (rtRegister.tag == null) {
+                    it.vk = ValueReference(rtRegister.content, it.qk!!.assignedRegister!!)
+                    it.qk = null
+                }
             }
         }
 
         _mulStations.value = _mulStations.value!!.onEach {
-            if (it.qj != null && _registers.value!![it.qj!!.assignedRegister!!].tag == null) {
-                it.vj = it.qj!!.assignedRegister
-                it.qj = null
+            if (it.qj != null) {
+                val rsRegister = _registers.value!![it.qj!!.assignedRegister!!]
+                if (rsRegister.tag == null) {
+                    it.vj = ValueReference(rsRegister.content, it.qj!!.assignedRegister!!)
+                    it.qj = null
+                }
             }
-            if (it.qk != null && _registers.value!![it.qk!!.assignedRegister!!].tag == null) {
-                it.vk = it.qk!!.assignedRegister
-                it.qk = null
+            if (it.qk != null) {
+                val rtRegister = _registers.value!![it.qk!!.assignedRegister!!]
+                if (rtRegister.tag == null) {
+                    it.vk = ValueReference(rtRegister.content, it.qk!!.assignedRegister!!)
+                    it.qk = null
+                }
             }
         }
 
         _storeBuffers.value = _storeBuffers.value!!.onEach {
-            if (it.q != null && _registers.value!![it.q!!.assignedRegister!!].tag == null) {
-                it.v = it.q!!.assignedRegister
-                it.q = null
+            if (it.q != null) {
+                val rtRegister = _registers.value!![it.q!!.assignedRegister!!]
+                if (rtRegister.tag == null) {
+                    it.v = ValueReference(rtRegister.content, it.q!!.assignedRegister!!)
+                    it.q = null
+                }
             }
         }
 

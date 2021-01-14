@@ -4,11 +4,12 @@ import com.husseinelfeky.tomasulosimulator.model.operation.BaseOperation
 import com.husseinelfeky.tomasulosimulator.model.simulation.base.Buffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.ValueReference
 
 data class StoreBuffer(
     override val tag: Tag,
     override var address: Address? = null,
-    var v: Int? = null,
+    var v: ValueReference? = null,
     var q: Tag? = null,
     override var isBusy: Boolean = false,
     override var instructionNumber: Int? = null,

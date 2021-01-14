@@ -4,12 +4,13 @@ import com.husseinelfeky.tomasulosimulator.model.operation.BaseOperation
 import com.husseinelfeky.tomasulosimulator.model.operation.Operation
 import com.husseinelfeky.tomasulosimulator.model.simulation.base.SimulationItem
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Tag
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.ValueReference
 
 data class ReservationStation(
     override val tag: Tag,
     var operation: Operation? = null,
-    var vj: Int? = null,
-    var vk: Int? = null,
+    var vj: ValueReference? = null,
+    var vk: ValueReference? = null,
     var qj: Tag? = null,
     var qk: Tag? = null,
     override var isBusy: Boolean = false,

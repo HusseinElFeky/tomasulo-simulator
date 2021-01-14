@@ -18,7 +18,7 @@ class StoreBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tv_tag.text = storeBuffer.tag.name
             tv_address.text = storeBuffer.address?.toFormattedString() ?: "-"
             tv_v.text = if (storeBuffer.v != null) {
-                "R[${FPR.getName(storeBuffer.v!!)}]"
+                "R[${FPR.getName(storeBuffer.v!!.registerReference)}]"
             } else {
                 "-"
             }

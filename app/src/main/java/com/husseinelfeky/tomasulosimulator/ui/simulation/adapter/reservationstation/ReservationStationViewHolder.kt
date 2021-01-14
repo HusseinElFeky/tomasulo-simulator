@@ -17,12 +17,12 @@ class ReservationStationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tv_tag.text = reservationStation.tag.name
             tv_operation.text = reservationStation.operation?.toString() ?: "-"
             tv_vj.text = if (reservationStation.vj != null) {
-                "R[${FPR.getName(reservationStation.vj!!)}]"
+                "R[${FPR.getName(reservationStation.vj!!.registerReference)}]"
             } else {
                 "-"
             }
             tv_vk.text = if (reservationStation.vk != null) {
-                "R[${FPR.getName(reservationStation.vk!!)}]"
+                "R[${FPR.getName(reservationStation.vk!!.registerReference)}]"
             } else {
                 "-"
             }
