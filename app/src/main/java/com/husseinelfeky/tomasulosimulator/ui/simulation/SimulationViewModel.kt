@@ -62,6 +62,21 @@ class SimulationViewModel : ViewModel() {
         }
     }
 
+    fun showValues(showValues: Boolean) {
+        _addStations.value = _addStations.value!!.onEach {
+            it.showValues = showValues
+        }
+        _mulStations.value = _mulStations.value!!.onEach {
+            it.showValues = showValues
+        }
+        _loadBuffers.value = _loadBuffers.value!!.onEach {
+            it.showValues = showValues
+        }
+        _storeBuffers.value = _storeBuffers.value!!.onEach {
+            it.showValues = showValues
+        }
+    }
+
     private fun canIssue(instruction: Instruction): Boolean {
         when (instruction.baseOperation) {
             BaseOperation.A -> {

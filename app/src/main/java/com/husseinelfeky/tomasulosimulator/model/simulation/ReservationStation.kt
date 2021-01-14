@@ -15,8 +15,9 @@ data class ReservationStation(
     var qk: Tag? = null,
     override var isBusy: Boolean = false,
     override var instructionNumber: Int? = null,
-    override var remainingCycles: Int? = null
-) : SimulationItem(tag, isBusy, instructionNumber, remainingCycles) {
+    override var remainingCycles: Int? = null,
+    override var showValues: Boolean = false
+) : SimulationItem(tag, isBusy, instructionNumber, remainingCycles, showValues) {
 
     override fun canExecute(): Boolean {
         return isBusy && remainingCycles != 0 && vj != null && vk != null

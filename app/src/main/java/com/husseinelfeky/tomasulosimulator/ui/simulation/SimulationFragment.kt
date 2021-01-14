@@ -41,9 +41,12 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
     private fun initView() {
         (requireActivity() as MainActivity).apply {
             btn_action_secondary.visibility = View.GONE
+            switch_action.visibility = View.VISIBLE
 
             fab_action.setImageResource(R.drawable.ic_play)
             btn_action_primary.text = getString(R.string.exit_simulation)
+            switch_action.text = getString(R.string.show_values)
+            switch_action.isChecked = false
         }
 
         viewModel.initInstructions(args.instructions)
@@ -69,6 +72,10 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
             }
 
             btn_action_secondary.setOnClickListener(null)
+
+            switch_action.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.showValues(isChecked)
+            }
         }
     }
 

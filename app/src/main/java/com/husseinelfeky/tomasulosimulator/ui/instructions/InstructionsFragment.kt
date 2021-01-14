@@ -34,9 +34,10 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
 
             fab_action.isEnabled = true
             btn_action_secondary.visibility = View.VISIBLE
+            switch_action.visibility = View.GONE
 
             fab_action.setImageResource(R.drawable.ic_add)
-            btn_action_primary.text = getString(R.string.proceed)
+            btn_action_primary.text = getString(R.string.run)
             btn_action_secondary.text = getString(R.string.clear)
         }
 
@@ -64,6 +65,8 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
             btn_action_secondary.setOnClickListener {
                 viewModel.clearInstructions()
             }
+
+            switch_action.setOnCheckedChangeListener(null)
         }
     }
 

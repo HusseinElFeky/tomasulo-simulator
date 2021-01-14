@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
 import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.StoreBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toFormattedString
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toInt
 import com.husseinelfeky.tomasulosimulator.model.simulation.register.FPR
 import kotlinx.android.synthetic.main.item_buffer_store.view.*
 
@@ -16,9 +17,21 @@ class StoreBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         with(itemView) {
             tv_remaining_cycles.text = storeBuffer.remainingCycles?.toString() ?: "-"
             tv_tag.text = storeBuffer.tag.name
-            tv_address.text = storeBuffer.address?.toFormattedString() ?: "-"
+            tv_address.text = if (storeBuffer.address != null) {
+                if (storeBuffer.showValues) {
+                    storeBuffer.address!!.toInt().toString()
+                } else {
+                    storeBuffer.address!!.toFormattedString()
+                }
+            } else {
+                "-"
+            }
             tv_v.text = if (storeBuffer.v != null) {
-                "R[${FPR.getName(storeBuffer.v!!.registerReference)}]"
+                if (storeBuffer.showValues) {
+                    storeBuffer.v!!.value.toString()
+                } else {
+                    "R[${FPR.getName(storeBuffer.v!!.registerReference)}]"
+                }
             } else {
                 "-"
             }

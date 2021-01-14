@@ -14,7 +14,19 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="16dp"
+                android:visibility="gone"
+                tools:text="@string/show_values"
+                tools:visibility="visible" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -42,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/proceed" />
+            android:text="@string/run" />
 
         <Button
             android:id="@+id/btn_action_secondary"
@@ -50,7 +62,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/clear" />
+            android:text="@string/clear"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

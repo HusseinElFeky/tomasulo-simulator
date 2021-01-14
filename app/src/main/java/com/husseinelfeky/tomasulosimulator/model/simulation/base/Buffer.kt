@@ -8,5 +8,6 @@ abstract class Buffer(
     open val address: Address?,
     override val isBusy: Boolean,
     override val instructionNumber: Int?,
-    override val remainingCycles: Int?
-) : SimulationItem(tag, isBusy, instructionNumber, remainingCycles)
+    override val remainingCycles: Int?,
+    override val showValues: Boolean
+) : SimulationItem(tag, isBusy, instructionNumber, remainingCycles, showValues)

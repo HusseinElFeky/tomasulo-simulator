@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.husseinelfeky.tomasulosimulator.R
 import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.LoadBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toFormattedString
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toInt
 import kotlinx.android.synthetic.main.item_buffer_load.view.*
 
 class LoadBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -15,7 +16,15 @@ class LoadBufferViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         with(itemView) {
             tv_remaining_cycles.text = loadBuffer.remainingCycles?.toString() ?: "-"
             tv_tag.text = loadBuffer.tag.name
-            tv_address.text = loadBuffer.address?.toFormattedString() ?: "-"
+            tv_address.text = if (loadBuffer.address != null) {
+                if (loadBuffer.showValues) {
+                    loadBuffer.address!!.toInt().toString()
+                } else {
+                    loadBuffer.address!!.toFormattedString()
+                }
+            } else {
+                "-"
+            }
             tv_busy.text = if (loadBuffer.isBusy) "Y" else "N"
         }
     }

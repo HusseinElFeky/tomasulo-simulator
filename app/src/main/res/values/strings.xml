@@ -9,8 +9,10 @@
 
     <string name="format_cycle">Cycle %d</string>
 
-    <string name="proceed">Proceed</string>
+    <string name="run">Run</string>
     <string name="clear">Clear</string>
+
     <string name="exit_simulation">Exit Simulation</string>
+    <string name="show_values">Show Values</string>
 
 </resources>

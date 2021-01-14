@@ -7,7 +7,8 @@ abstract class SimulationItem(
     open val tag: Tag,
     open val isBusy: Boolean,
     open val instructionNumber: Int?,
-    open val remainingCycles: Int?
+    open val remainingCycles: Int?,
+    open val showValues: Boolean
 ) : DifferentiableItem {
 
     val assignedRegister: Int?

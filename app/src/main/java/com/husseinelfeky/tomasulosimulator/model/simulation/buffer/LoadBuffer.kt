@@ -10,8 +10,9 @@ data class LoadBuffer(
     override var address: Address? = null,
     override var isBusy: Boolean = false,
     override var instructionNumber: Int? = null,
-    override var remainingCycles: Int? = null
-) : Buffer(tag, address, isBusy, instructionNumber, remainingCycles) {
+    override var remainingCycles: Int? = null,
+    override var showValues: Boolean = false
+) : Buffer(tag, address, isBusy, instructionNumber, remainingCycles, showValues) {
 
     override fun canExecute(): Boolean {
         return isBusy && remainingCycles != 0
