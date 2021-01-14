@@ -8,6 +8,10 @@ data class Address(
 ) {
 
     companion object {
+        fun Address.toInt(): Int {
+            return offset + base
+        }
+
         fun Address.toFormattedString(): String {
             return "$offset + ${GPR.getName(base)}"
         }

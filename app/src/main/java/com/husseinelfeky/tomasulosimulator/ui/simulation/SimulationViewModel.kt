@@ -12,6 +12,7 @@ import com.husseinelfeky.tomasulosimulator.model.simulation.ReservationStation
 import com.husseinelfeky.tomasulosimulator.model.simulation.base.SimulationItem.Companion.indexOfNextEmpty
 import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.LoadBuffer
 import com.husseinelfeky.tomasulosimulator.model.simulation.buffer.StoreBuffer
+import com.husseinelfeky.tomasulosimulator.model.simulation.general.Address.Companion.toInt
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.hasSimulationFinished
 import com.husseinelfeky.tomasulosimulator.model.simulation.general.InstructionStatus.Companion.indexOfNextInstructionStatus
@@ -60,6 +61,40 @@ class SimulationViewModel : ViewModel() {
         }
     }
 
+    private fun canIssue(instruction: Instruction): Boolean {
+        when (instruction.baseOperation) {
+            BaseOperation.A -> {
+                if (_addStations.value!!.indexOfNextEmpty() == -1) return false
+            }
+            BaseOperation.M -> {
+                if (_mulStations.value!!.indexOfNextEmpty() == -1) return false
+            }
+            BaseOperation.L -> {
+                instruction as ITypeInstruction
+                if (_loadBuffers.value!!.indexOfNextEmpty() == -1) return false
+
+                // Check the address of previous instructions in all store buffers.
+                _storeBuffers.value!!.forEach {
+                    if (it.address?.toInt() == instruction.address.toInt()) return false
+                }
+            }
+            BaseOperation.S -> {
+                instruction as ITypeInstruction
+                if (_storeBuffers.value!!.indexOfNextEmpty() == -1) return false
+
+                // Check the address of previous instructions in all load and store buffers.
+                _loadBuffers.value!!.forEach {
+                    if (it.address?.toInt() == instruction.address.toInt()) return false
+                }
+                _storeBuffers.value!!.forEach {
+                    if (it.address?.toInt() == instruction.address.toInt()) return false
+                }
+            }
+        }
+
+        return true
+    }
+
     fun goToNextCycle() {
         // Increment cycle by one.
         _cycle.value = _cycle.value!! + 1
@@ -74,11 +109,11 @@ class SimulationViewModel : ViewModel() {
 
         if (nextInstS != null) {
             val nextInst = nextInstS.instruction
-            when (nextInst.operation!!.baseOperation) {
+            when (nextInst.baseOperation) {
                 BaseOperation.A -> {
                     nextInst as RTypeInstruction
-                    val nextEmptyIndex = _addStations.value!!.indexOfNextEmpty()
-                    if (nextEmptyIndex != -1) {
+                    if (canIssue(nextInst)) {
+                        val nextEmptyIndex = _addStations.value!!.indexOfNextEmpty()
                         val rsTag = _registers.value!![nextInst.rs!!].tag
                         val rtTag = _registers.value!![nextInst.rt!!].tag
                         _addStations.value = _addStations.value!!.apply {
@@ -113,8 +148,8 @@ class SimulationViewModel : ViewModel() {
                 }
                 BaseOperation.M -> {
                     nextInst as RTypeInstruction
-                    val nextEmptyIndex = _mulStations.value!!.indexOfNextEmpty()
-                    if (nextEmptyIndex != -1) {
+                    if (canIssue(nextInst)) {
+                        val nextEmptyIndex = _mulStations.value!!.indexOfNextEmpty()
                         val rsTag = _registers.value!![nextInst.rs!!].tag
                         val rtTag = _registers.value!![nextInst.rt!!].tag
                         _mulStations.value = _mulStations.value!!.apply {
@@ -149,8 +184,8 @@ class SimulationViewModel : ViewModel() {
                 }
                 BaseOperation.L -> {
                     nextInst as ITypeInstruction
-                    val nextEmptyIndex = _loadBuffers.value!!.indexOfNextEmpty()
-                    if (nextEmptyIndex != -1) {
+                    if (canIssue(nextInst)) {
+                        val nextEmptyIndex = _loadBuffers.value!!.indexOfNextEmpty()
                         _loadBuffers.value = _loadBuffers.value!!.apply {
                             this[nextEmptyIndex].apply {
                                 tag.assignedRegister = nextInst.rt
@@ -173,8 +208,8 @@ class SimulationViewModel : ViewModel() {
                 }
                 BaseOperation.S -> {
                     nextInst as ITypeInstruction
-                    val nextEmptyIndex = _storeBuffers.value!!.indexOfNextEmpty()
-                    if (nextEmptyIndex != -1) {
+                    if (canIssue(nextInst)) {
+                        val nextEmptyIndex = _storeBuffers.value!!.indexOfNextEmpty()
                         val qTag = _registers.value!![nextInst.rt!!].tag
                         _storeBuffers.value = _storeBuffers.value!!.apply {
                             this[nextEmptyIndex].apply {
