@@ -70,6 +70,15 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
     private fun initObservers() {
         viewModel.instructions.observe(viewLifecycleOwner) { list ->
             Timber.i("Instructions: $list")
+
+            if (list.isEmpty()) {
+                rv_instructions.visibility = View.GONE
+                group_no_instructions.visibility = View.VISIBLE
+            } else {
+                group_no_instructions.visibility = View.GONE
+                rv_instructions.visibility = View.VISIBLE
+            }
+
             instructionsAdapter.submitList(list.toList())
         }
     }
